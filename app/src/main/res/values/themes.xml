@@ -6,4 +6,12 @@
     </style>
 
     <style name="Theme.OnlineExamApp" parent="Base.Theme.OnlineExamApp" />
+
+    <style name="Theme.MyApp" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">#6200EE</item>
+        <item name="colorPrimaryVariant">#3700B3</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#03DAC5</item>
+    </style>
+
 </resources>

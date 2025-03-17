@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary Colors -->
+    <color name="primary">#0A84FF</color>  <!-- Brighter blue for dark mode -->
+    <color name="primary_variant">#0056B3</color>  <!-- Slightly lighter than light mode for contrast -->
+    <color name="secondary">#00DAC6</color>  <!-- Brighter teal for dark mode -->
+    <color name="accent">#FFC107</color>  <!-- Warm yellow-orange for highlights -->
+
+    <!-- Background & Surface Colors -->
+    <color name="background">#121212</color>  <!-- Deep black for dark mode background -->
+    <color name="surface">#1E1E1E</color>  <!-- Dark gray for card backgrounds -->
+    <color name="card_background">#242424</color>  <!-- Slightly lighter than surface -->
+
+    <!-- Text Colors -->
+    <color name="text_primary">#FFFFFF</color>  <!-- White for high contrast -->
+    <color name="text_secondary">#E0E0E0</color>  <!-- Light gray for secondary text -->
+    <color name="text_hint">#BDBDBD</color>  <!-- Medium gray for hints -->
+
+    <!-- Action & Status Colors -->
+    <color name="success">#66BB6A</color>  <!-- Lighter green for visibility -->
+    <color name="error">#F44336</color>  <!-- Brighter red for errors/warnings -->
+    <color name="warning">#FFA726</color>  <!-- Brighter orange -->
+    <color name="info">#29B6F6</color>  <!-- Lighter blue for information messages -->
+
+    <!-- Button Colors -->
+    <color name="button_primary">#0A84FF</color>  <!-- Same as primary -->
+    <color name="button_secondary">#00DAC6</color>  <!-- Brighter teal -->
+    <color name="button_disabled">#616161</color>  <!-- Darker gray for disabled state -->
+
+    <!-- Neutral/Gray Shades -->
+    <color name="light_gray">#424242</color>  <!-- Dark mode divider -->
+    <color name="medium_gray">#757575</color>  <!-- Medium gray -->
+    <color name="dark_gray">#BDBDBD</color>  <!-- Lighter gray for contrast -->
+
+    <!-- Additional Colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>

@@ -1,5 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Primary Colors -->
+    <color name="primary">#007AFF</color>  <!-- iOS-like blue, modern look -->
+    <color name="primary_variant">#0056B3</color>  <!-- Darker shade for contrast -->
+    <color name="secondary">#00BFA5</color>  <!-- Teal, fresh and modern -->
+    <color name="accent">#FFB300</color>  <!-- Warm yellow-orange for highlights -->
+
+    <!-- Background & Surface Colors -->
+    <color name="background">#F8F9FA</color>  <!-- Soft light gray, clean background -->
+    <color name="surface">#FFFFFF</color>  <!-- White for card backgrounds -->
+    <color name="card_background">#FAFAFA</color>  <!-- Slightly off-white for cards -->
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>  <!-- Dark gray for high readability -->
+    <color name="text_secondary">#616161</color>  <!-- Medium gray for secondary text -->
+    <color name="text_hint">#9E9E9E</color>  <!-- Light gray for hints -->
+
+    <!-- Action & Status Colors -->
+    <color name="success">#4CAF50</color>  <!-- Green for success messages -->
+    <color name="error">#D32F2F</color>  <!-- Red for errors/warnings -->
+    <color name="warning">#FF9800</color>  <!-- Orange for warnings -->
+    <color name="info">#0288D1</color>  <!-- Blue for information messages -->
+
+    <!-- Button Colors -->
+    <color name="button_primary">#007AFF</color>  <!-- Same as primary -->
+    <color name="button_secondary">#00BFA5</color>  <!-- Teal for secondary buttons -->
+    <color name="button_disabled">#BDBDBD</color>  <!-- Light gray for disabled state -->
+
+    <!-- Neutral/Gray Shades -->
+    <color name="light_gray">#E0E0E0</color>  <!-- Light gray for dividers -->
+    <color name="medium_gray">#BDBDBD</color>  <!-- Medium gray for outlines -->
+    <color name="dark_gray">#424242</color>  <!-- Dark gray for contrast -->
+
+    <!-- Additional Colors -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center"
+    android:background="@color/background">
+
+    <TextView
+        android:id="@+id/tvCreateExamTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create New Exam"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:paddingBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Exam Title"
+        android:inputType="text"
+        android:padding="14dp"
+        android:textSize="16sp"
+        android:background="@drawable/input_bg"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etSubject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Subject"
+        android:inputType="text"
+        android:padding="14dp"
+        android:textSize="16sp"
+        android:background="@drawable/input_bg"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="12dp"/>
+
+    <EditText
+        android:id="@+id/etDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Date"
+        android:focusable="false"
+        android:clickable="true"
+        android:padding="14dp"
+        android:textSize="16sp"
+        android:background="@drawable/input_bg"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="12dp"/>
+    <EditText
+        android:id="@+id/etTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Select Time"
+        android:focusable="false"
+        android:clickable="true"
+        android:padding="14dp"
+        android:textSize="16sp"
+        android:background="@drawable/input_bg"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="12dp"/>
+
+
+
+    <EditText
+        android:id="@+id/etDuration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Duration (Minutes)"
+        android:inputType="number"
+        android:padding="14dp"
+        android:textSize="16sp"
+        android:background="@drawable/input_bg"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="16dp"/>
+
+    <Button
+        android:id="@+id/btnCreateExam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Exam"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:padding="14dp"
+        android:background="@drawable/rounded_button"
+        android:elevation="4dp"
+        android:layout_marginBottom="12dp"/>
+
+
+
+</LinearLayout>

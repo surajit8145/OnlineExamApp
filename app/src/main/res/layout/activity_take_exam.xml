@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <!-- Exam Title -->
+    <TextView
+        android:id="@+id/tvExamTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exam Title"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_gravity="center"
+        android:paddingBottom="10dp"/>
+
+    <!-- Countdown Timer -->
+    <TextView
+        android:id="@+id/tvTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time Left: 00:00"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/error"
+        android:layout_gravity="center"
+        android:paddingBottom="10dp"/>
+
+    <!-- RecyclerView for Questions -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvQuestions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="10dp"/>
+
+    <!-- Submit Button -->
+    <Button
+        android:id="@+id/btnSubmitExam"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit Exam"
+        android:backgroundTint="@color/button_primary"
+        android:textColor="@color/white"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

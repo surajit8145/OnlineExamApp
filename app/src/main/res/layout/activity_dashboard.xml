@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="@color/background">
+
+    <!-- Welcome Text -->
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome, User"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="28dp"/>
+
+    <!-- Exam List Button -->
+    <Button
+        android:id="@+id/btnExamList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Available Exams"
+        android:backgroundTint="@color/secondary"
+        android:textColor="@color/white"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/rounded_button"/>
+
+    <!-- View Results -->
+    <Button
+        android:id="@+id/btnViewResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="View Results"
+        android:backgroundTint="@color/accent"
+        android:textColor="@color/white"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/rounded_button"/>
+
+    <!-- Profile Button -->
+    <Button
+        android:id="@+id/btnProfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Profile"
+        android:backgroundTint="@color/primary"
+        android:textColor="@color/white"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/rounded_button"/>
+
+    <!-- Logout Button -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Logout"
+        android:backgroundTint="@color/error"
+        android:textColor="@color/white"
+        android:background="@drawable/rounded_button"/>
+</LinearLayout>
