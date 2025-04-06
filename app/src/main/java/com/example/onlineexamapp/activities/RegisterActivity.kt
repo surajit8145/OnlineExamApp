@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.onlineexamapp.MainActivity
 import com.example.onlineexamapp.databinding.ActivityRegisterBinding
+import com.example.onlineexamapp.fragments.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -87,7 +89,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun redirectToHomePage() {
-        val intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
     }

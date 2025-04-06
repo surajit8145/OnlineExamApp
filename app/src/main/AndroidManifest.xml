@@ -12,14 +12,13 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-
         android:supportsRtl="true"
         android:theme="@style/Theme.OnlineExamApp"
         tools:targetApi="31">
 
-        <!-- Splash Screen (First Activity) -->
+        <!-- Main Activity with Bottom Navigation (Launcher Activity) -->
         <activity
-            android:name=".activities.SplashScreenActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.OnlineExamApp">
             <intent-filter>
@@ -29,23 +28,21 @@
         </activity>
 
         <!-- Other Activities -->
-        <activity android:name=".activities.HomeActivity" android:exported="false" />
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.LoginActivity" android:exported="false" />
-        <activity android:name=".activities.DashboardActivity" android:exported="false" />
-        <activity android:name=".activities.AdminDashboardActivity"/>
-        <activity android:name=".activities.ManageExamsActivity"/>
-        <activity android:name=".activities.TakeExamActivity"/>
-        <activity android:name=".activities.ProfileActivity"/>
-        <activity android:name=".activities.AdminViewResultsActivity"/>
-        <activity android:name=".activities.EditExamActivity"/>
-        <activity android:name=".activities.ExamListActivity"/>
+
+        <activity android:name=".activities.ManageExamsActivity" />
+        <activity android:name=".activities.TakeExamActivity" />
+        <activity android:name=".activities.ProfileActivity" />
+        <activity android:name=".activities.AdminViewResultsActivity" />
+        <activity android:name=".activities.EditExamActivity" />
+        <activity android:name=".activities.ExamListActivity" />
         <activity android:name=".activities.CreateExamActivity" />
         <activity android:name=".activities.AddQuestionActivity" />
         <activity android:name=".activities.ManageStudentsActivity" />
-        <activity android:name=".activities.ViewProfileActivity"/>
-        <activity android:name=".activities.EditStudentActivity"/>
-        <activity android:name=".activities.ViewResultsActivity"/>
+
+        <activity android:name=".activities.EditStudentActivity" />
+        <activity android:name=".activities.ViewResultsActivity" />
 
         <!-- Fixed: EditQuestionActivity -->
         <activity
@@ -54,8 +51,6 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activities.ResetPasswordActivity" />
-
-
         <activity android:name=".activities.StudentResultsActivity" />
 
     </application>

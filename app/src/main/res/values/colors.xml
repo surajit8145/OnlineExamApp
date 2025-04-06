@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Primary Colors -->
-    <color name="primary">#007AFF</color>  <!-- iOS-like blue, modern look -->
+    <color name="primary">#DA499CFD</color>  <!-- iOS-like blue, modern look -->
     <color name="primary_variant">#0056B3</color>  <!-- Darker shade for contrast -->
     <color name="secondary">#00BFA5</color>  <!-- Teal, fresh and modern -->
     <color name="accent">#FFB300</color>  <!-- Warm yellow-orange for highlights -->
@@ -23,7 +23,7 @@
     <color name="info">#0288D1</color>  <!-- Blue for information messages -->
 
     <!-- Button Colors -->
-    <color name="button_primary">#007AFF</color>  <!-- Same as primary -->
+    <color name="button_primary">#008080</color>  <!-- Same as primary -->
     <color name="button_secondary">#00BFA5</color>  <!-- Teal for secondary buttons -->
     <color name="button_disabled">#BDBDBD</color>  <!-- Light gray for disabled state -->
 
@@ -35,4 +35,7 @@
     <!-- Additional Colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+
+
+
 </resources>

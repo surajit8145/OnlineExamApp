@@ -9,7 +9,7 @@ import com.example.onlineexamapp.R
 import com.example.onlineexamapp.models.Exam
 
 class ExamAdapter(
-    private val examList: List<Exam>,
+    private var examList: List<Exam>,
     private val onExamClick: (Exam) -> Unit
 ) : RecyclerView.Adapter<ExamAdapter.ExamViewHolder>() {
 
@@ -26,11 +26,22 @@ class ExamAdapter(
 
     override fun getItemCount(): Int = examList.size
 
+    fun updateData(newList: List<Exam>) {
+        examList = newList
+        notifyDataSetChanged()
+    }
+
     class ExamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val titleTextView: TextView = itemView.findViewById(R.id.textViewExamTitle)
+        private val subjectTextView: TextView = itemView.findViewById(R.id.textViewExamSubject)
+        private val dateTimeTextView: TextView = itemView.findViewById(R.id.textViewExamDateTime)
+        private val durationTextView: TextView = itemView.findViewById(R.id.textViewExamDuration)
 
         fun bind(exam: Exam) {
             titleTextView.text = exam.title
+            subjectTextView.text = " ${exam.subject}"
+            dateTimeTextView.text = " ${exam.date}  ${exam.time}"
+            durationTextView.text = " ${exam.duration} mins"
         }
     }
 }

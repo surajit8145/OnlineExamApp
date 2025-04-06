@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.onlineexamapp.MainActivity
 import com.example.onlineexamapp.databinding.ActivityLoginBinding
+import com.example.onlineexamapp.fragments.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -46,7 +48,7 @@ class LoginActivity : AppCompatActivity() {
                                         }
 
                                         // Redirect to HomeActivity
-                                        startActivity(Intent(this, HomeActivity::class.java))
+                                        startActivity(Intent(this, MainActivity::class.java))
                                         finish()
                                     } else {
                                         Toast.makeText(this, "User data not found!", Toast.LENGTH_SHORT).show()

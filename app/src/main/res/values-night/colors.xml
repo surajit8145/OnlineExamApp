@@ -23,7 +23,7 @@
     <color name="info">#29B6F6</color>  <!-- Lighter blue for information messages -->
 
     <!-- Button Colors -->
-    <color name="button_primary">#0A84FF</color>  <!-- Same as primary -->
+    <color name="button_primary">#E5006D6D</color>  <!-- Same as primary -->
     <color name="button_secondary">#00DAC6</color>  <!-- Brighter teal -->
     <color name="button_disabled">#616161</color>  <!-- Darker gray for disabled state -->
 

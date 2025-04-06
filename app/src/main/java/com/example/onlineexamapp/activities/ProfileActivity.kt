@@ -7,7 +7,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.onlineexamapp.MainActivity
 import com.example.onlineexamapp.R
+import com.example.onlineexamapp.fragments.ProfileFragment
 import com.example.onlineexamapp.utils.FirebaseHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -89,7 +91,7 @@ class ProfileActivity : AppCompatActivity() {
             .update("name", newName)
             .addOnSuccessListener {
                 Toast.makeText(this, "Profile updated successfully!", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, ViewProfileActivity::class.java)) // Redirect to View Profile
+                startActivity(Intent(this, MainActivity::class.java)) // Redirect to View Profile
                 finish()
             }
             .addOnFailureListener {
