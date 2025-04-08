@@ -30,24 +30,28 @@
             android:id="@+id/rbOption1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="Option 1"/>
 
         <RadioButton
             android:id="@+id/rbOption2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="Option 2"/>
 
         <RadioButton
             android:id="@+id/rbOption3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="Option 3"/>
 
         <RadioButton
             android:id="@+id/rbOption4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:text="Option 4"/>
     </RadioGroup>
 </LinearLayout>

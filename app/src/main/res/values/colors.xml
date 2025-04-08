@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Primary Colors -->
-    <color name="primary">#DA499CFD</color>  <!-- iOS-like blue, modern look -->
+    <color name="primary">#EF1A80F6</color>  <!-- iOS-like blue, modern look -->
     <color name="primary_variant">#0056B3</color>  <!-- Darker shade for contrast -->
     <color name="secondary">#00BFA5</color>  <!-- Teal, fresh and modern -->
     <color name="accent">#FFB300</color>  <!-- Warm yellow-orange for highlights -->
@@ -12,7 +12,7 @@
     <color name="card_background">#FAFAFA</color>  <!-- Slightly off-white for cards -->
 
     <!-- Text Colors -->
-    <color name="text_primary">#212121</color>  <!-- Dark gray for high readability -->
+    <color name="text_primary">#000000</color>  <!-- Dark gray for high readability -->
     <color name="text_secondary">#616161</color>  <!-- Medium gray for secondary text -->
     <color name="text_hint">#9E9E9E</color>  <!-- Light gray for hints -->
 

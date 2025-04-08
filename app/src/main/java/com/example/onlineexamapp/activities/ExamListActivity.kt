@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.onlineexamapp.adapters.ExamAdapter
 import com.example.onlineexamapp.databinding.ActivityExamListBinding
 import com.example.onlineexamapp.models.Exam
-import com.example.onlineexamapp.adapters.ExamAdapter
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,8 +20,17 @@ class ExamListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityExamListBinding
     private lateinit var db: FirebaseFirestore
-    private lateinit var examAdapter: ExamAdapter
-    private val examList = mutableListOf<Exam>()
+    private val auth = FirebaseAuth.getInstance()
+
+    private lateinit var upcomingAdapter: ExamAdapter
+    private lateinit var runningAdapter: ExamAdapter
+    private lateinit var attendedAdapter: ExamAdapter
+    private lateinit var pastAdapter: ExamAdapter
+
+    private val upcomingList = mutableListOf<Exam>()
+    private val runningList = mutableListOf<Exam>()
+    private val attendedList = mutableListOf<Exam>()
+    private val pastList = mutableListOf<Exam>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,65 +38,113 @@ class ExamListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         db = FirebaseFirestore.getInstance()
-        setupRecyclerView()
+        setupRecyclerViews()
         fetchExams()
     }
 
-    private fun setupRecyclerView() {
-        binding.recyclerViewExams.layoutManager = LinearLayoutManager(this)
+    private fun setupRecyclerViews() {
+        binding.rvUpcomingExams.layoutManager = LinearLayoutManager(this)
+        binding.rvRunningExams.layoutManager = LinearLayoutManager(this)
+        binding.rvAttendedExams.layoutManager = LinearLayoutManager(this)
+        binding.rvPastExams.layoutManager = LinearLayoutManager(this)
 
-        examAdapter = ExamAdapter(examList) { selectedExam ->
-            val intent = Intent(this, TakeExamActivity::class.java)
-            intent.putExtra("examId", selectedExam.id)
-            startActivity(intent)
+        upcomingAdapter = ExamAdapter(upcomingList) { }
+        runningAdapter = ExamAdapter(runningList) { selectedExam ->
+            showExamInstructionDialog(selectedExam)
         }
+        attendedAdapter = ExamAdapter(attendedList) { }
 
-        binding.recyclerViewExams.adapter = examAdapter
+        pastAdapter = ExamAdapter(pastList) { }
+
+
+
+
+
+        binding.rvUpcomingExams.adapter = upcomingAdapter
+        binding.rvRunningExams.adapter = runningAdapter
+        binding.rvAttendedExams.adapter = attendedAdapter
+        binding.rvPastExams.adapter = pastAdapter
+    }
+
+    private fun showExamInstructionDialog(exam: Exam) {
+        val message = """
+            📝 Exam: ${exam.title}
+            📚 Subject: ${exam.subject}
+            📅 Date: ${exam.date}
+            ⏰ Time: ${exam.time}
+            ⏳ Duration: ${exam.duration} minutes
+
+            Please read all questions carefully.
+            Once you start, you can't go back.
+            Good luck!
+        """.trimIndent()
+
+        AlertDialog.Builder(this)
+            .setTitle("Exam Instructions")
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("Start") { dialog, _ ->
+                val intent = Intent(this, TakeExamActivity::class.java)
+                intent.putExtra("examId", exam.id)
+                startActivity(intent)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     private fun fetchExams() {
-        db.collection("exams").get()
-            .addOnSuccessListener { documents ->
-                examList.clear()
+        val currentUser = auth.currentUser ?: return
 
-                for (document in documents) {
-                    val exam = document.toObject(Exam::class.java).apply {
-                        id = document.id
+        db.collection("results")
+            .whereEqualTo("userId", currentUser.uid)
+            .get()
+            .addOnSuccessListener { resultSnapshots ->
+                val attendedExamIds = resultSnapshots.mapNotNull { it.getString("examId") }
+
+                db.collection("exams").get()
+                    .addOnSuccessListener { documents ->
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault())
+                        val now = System.currentTimeMillis()
+
+                        upcomingList.clear()
+                        runningList.clear()
+                        attendedList.clear()
+                        pastList.clear()
+
+                        for (document in documents) {
+                            val exam = document.toObject(Exam::class.java).apply { id = document.id }
+
+                            if (exam.date.isEmpty() || exam.time.isEmpty()) continue
+
+                            val startTime = try {
+                                dateFormat.parse("${exam.date} ${exam.time}")?.time ?: continue
+                            } catch (e: Exception) {
+                                continue
+                            }
+                            val endTime = startTime + (3 * 60 * 60 * 1000) // 3 hours in ms
+
+                            when {
+                                attendedExamIds.contains(exam.id) -> attendedList.add(exam)
+                                now < startTime -> upcomingList.add(exam)
+                                now in startTime..endTime -> runningList.add(exam)
+                                now > endTime -> pastList.add(exam)
+                            }
+                        }
+
+                        runOnUiThread {
+                            upcomingAdapter.notifyDataSetChanged()
+                            runningAdapter.notifyDataSetChanged()
+                            attendedAdapter.notifyDataSetChanged()
+                            pastAdapter.notifyDataSetChanged()
+                        }
                     }
-
-                    // ✅ Check if date and time are missing
-                    if (exam.date.isEmpty() || exam.time.isEmpty()) {
-                        Log.e("ExamListActivity", "Skipping exam: Missing date or time")
-                        continue
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Failed to load exams!", Toast.LENGTH_SHORT).show()
+                        Log.e("ExamListActivity", "Error fetching exams", e)
                     }
-
-                    examList.add(exam)
-                }
-
-                // ✅ Sort exams by date (nearest first)
-                val dateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault())
-                examList.sortBy {
-                    try {
-                        dateFormat.parse("${it.date} ${it.time}")?.time ?: Long.MAX_VALUE
-                    } catch (e: Exception) {
-                        Log.e("ExamListActivity", "Invalid date format for exam: ${it.title}")
-                        Long.MAX_VALUE
-                    }
-                }
-
-                runOnUiThread {
-                    examAdapter.notifyDataSetChanged()
-                    binding.recyclerViewExams.visibility = if (examList.isEmpty()) View.GONE else View.VISIBLE
-                    if (examList.isEmpty()) {
-                        Toast.makeText(this, "No exams available", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-            .addOnFailureListener { e ->
-                runOnUiThread {
-                    Toast.makeText(this, "Failed to load exams!", Toast.LENGTH_SHORT).show()
-                    Log.e("ExamListActivity", "Error fetching exams", e)
-                }
             }
     }
 }

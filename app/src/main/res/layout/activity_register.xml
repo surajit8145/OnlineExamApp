@@ -104,13 +104,38 @@
             android:padding="12dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
+
+    <!-- Admin Code Input (Visible only when Admin is selected) -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/adminCodeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Admin Code"
+        android:visibility="gone"
+        app:boxCornerRadiusBottomEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxStrokeColor="@color/primary">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etAdminCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:padding="12dp"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
     <!-- Role Selection -->
     <TextView
         android:text="Select Role:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
-        android:textColor="@color/black"
+        android:textColor="@color/text_primary"
         android:layout_marginBottom="4dp"/>
 
     <RadioGroup
@@ -120,17 +145,21 @@
         android:layout_marginBottom="16dp">
 
         <RadioButton
-            android:id="@+id/radioAdmin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Admin"
-            android:checked="true"/>
-
-        <RadioButton
             android:id="@+id/radioStudent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Student"/>
+            android:text="Student"
+            android:checked="true"/>
+
+
+        <RadioButton
+            android:id="@+id/radioAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin"/>
+
+
+
     </RadioGroup>
 
     <!-- Register Button -->
@@ -151,7 +180,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Already have an account? Login"
-        android:textSize="14sp"
+        android:textSize="16dp"
         android:textColor="@color/primary"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"

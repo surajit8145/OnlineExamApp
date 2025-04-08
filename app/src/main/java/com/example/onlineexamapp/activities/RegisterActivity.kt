@@ -2,11 +2,11 @@ package com.example.onlineexamapp.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.onlineexamapp.MainActivity
 import com.example.onlineexamapp.databinding.ActivityRegisterBinding
-import com.example.onlineexamapp.fragments.HomeFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -16,6 +16,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var auth: FirebaseAuth
     private val db = FirebaseFirestore.getInstance()
+    private val ADMIN_CODE = "02122003"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,15 +25,21 @@ class RegisterActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+        // 👇 Add this to toggle the Admin Code field based on selection
+        binding.radioAdmin.setOnCheckedChangeListener { _, isChecked ->
+            binding.adminCodeLayout.visibility = if (isChecked) View.VISIBLE else View.GONE
+        }
+
         binding.btnRegister.setOnClickListener {
             registerUser()
         }
+
         binding.tvLogin.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
-
     }
+
 
     private fun registerUser() {
         val email = binding.etEmail.text.toString().trim()
@@ -44,6 +51,14 @@ class RegisterActivity : AppCompatActivity() {
         if (email.isEmpty() || password.isEmpty() || name.isEmpty() || phone.isEmpty()) {
             Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
+        }
+
+        if (role == "admin") {
+            val adminCode = binding.etAdminCode.text.toString().trim()
+            if (adminCode != ADMIN_CODE) {
+                Toast.makeText(this, "Invalid admin registration code!", Toast.LENGTH_SHORT).show()
+                return
+            }
         }
 
         auth.createUserWithEmailAndPassword(email, password)
@@ -59,7 +74,7 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun saveUserToFirestore(user: FirebaseUser, name: String, phone: String, email: String, role: String) {
-        val userId = "user-" + email.replace(".", "_") // Convert email to a safe Firestore document ID
+        val userId = "user-" + email.replace(".", "_") // safe Firestore ID
         val userData = hashMapOf(
             "id" to userId,
             "name" to name,
@@ -93,6 +108,4 @@ class RegisterActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
-
-
 }

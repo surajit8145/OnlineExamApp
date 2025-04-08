@@ -32,29 +32,24 @@ class TakeExamActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Initialize View Binding
         binding = ActivityTakeExamBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Get examId from intent
         examId = intent.getStringExtra("examId")
 
-        // Initialize RecyclerView
         binding.rvQuestions.layoutManager = LinearLayoutManager(this)
-        questionAdapter = QuestionAdapter(questionList, isEditable = false)
+        questionAdapter = QuestionAdapter(questionList, isEditable = true) // ✅ allow answer selection
         binding.rvQuestions.adapter = questionAdapter
 
         examId?.let {
-            loadExamDuration(it)  // Fetch exam duration
-            loadQuestions(it)  // Load exam questions
+            loadExamDuration(it)
+            loadQuestions(it)
         } ?: run {
             Log.e("TakeExamActivity", "No exam ID provided")
         }
 
-        // Submit Exam Button Click
         binding.btnSubmitExam.setOnClickListener {
-            submitExam()
+            confirmSubmitExam()
         }
     }
 
@@ -63,14 +58,12 @@ class TakeExamActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document.exists()) {
                     val durationMinutes = document.getLong("duration") ?: 0
-                    examDurationMillis = TimeUnit.MINUTES.toMillis(durationMinutes) // Convert to milliseconds
+                    examDurationMillis = TimeUnit.MINUTES.toMillis(durationMinutes)
                     startCountdownTimer()
-                } else {
-                    Log.e("TakeExamActivity", "Exam document not found")
                 }
             }
-            .addOnFailureListener { e ->
-                Log.e("TakeExamActivity", "Error fetching exam duration", e)
+            .addOnFailureListener {
+                Log.e("TakeExamActivity", "Error fetching exam duration", it)
             }
     }
 
@@ -79,14 +72,13 @@ class TakeExamActivity : AppCompatActivity() {
             override fun onTick(millisUntilFinished: Long) {
                 val minutes = TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)
                 val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) % 60
-
-                binding.tvTimer.text = String.format("%02d:%02d", minutes, seconds) // Update UI timer
+                binding.tvTimer.text = String.format("%02d:%02d", minutes, seconds)
             }
 
             override fun onFinish() {
                 binding.tvTimer.text = "00:00"
                 Toast.makeText(this@TakeExamActivity, "Time's up! Submitting exam...", Toast.LENGTH_SHORT).show()
-                submitExam() // Auto-submit when time runs out
+                submitExam()
             }
         }.start()
     }
@@ -100,25 +92,47 @@ class TakeExamActivity : AppCompatActivity() {
                 for (document in documents) {
                     val id = document.id
                     val questionText = document.getString("question") ?: ""
-
-                    // Ensure options list is properly retrieved
                     val options = document.get("options") as? List<*> ?: emptyList<Any>()
                     val optionsList = options.filterIsInstance<String>()
-
                     val correctAnswer = document.getString("correctAnswer") ?: ""
 
-                    questionList.add(Question(id, examId, questionText, optionsList.toMutableList(), correctAnswer))
+                    questionList.add(
+                        Question(id, examId, questionText, optionsList.toMutableList(), correctAnswer)
+                    )
                 }
                 questionAdapter.notifyDataSetChanged()
             }
-            .addOnFailureListener { e ->
-                Log.e("TakeExamActivity", "Error loading questions", e)
+            .addOnFailureListener {
+                Log.e("TakeExamActivity", "Error loading questions", it)
             }
     }
 
+    private fun confirmSubmitExam() {
+        if (isExamSubmitted) return
+
+        val unanswered = questionList.count { it.selectedAnswer == null }
+        if (unanswered > 0) {
+            AlertDialog.Builder(this)
+                .setTitle("Unanswered Questions")
+                .setMessage("You have $unanswered unanswered questions. Do you still want to submit?")
+                .setPositiveButton("Yes") { _, _ -> submitExam() }
+                .setNegativeButton("No", null)
+                .show()
+        } else {
+            AlertDialog.Builder(this)
+                .setTitle("Submit Exam")
+                .setMessage("Are you sure you want to submit the exam?")
+                .setPositiveButton("Submit") { _, _ -> submitExam() }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+    }
+
     private fun submitExam() {
+        if (isExamSubmitted) return
+
         if (userId == null || examId == null) {
-            Toast.makeText(this, "User or exam ID is missing", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "User or exam ID missing", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -127,10 +141,9 @@ class TakeExamActivity : AppCompatActivity() {
         val totalQuestions = questionList.size
 
         for (question in questionList) {
-            val responseId = "$userId-${question.id}"  // Unique ID for response
+            val responseId = "$userId-${question.id}"
             val correct = question.selectedAnswer == question.correctAnswer
-
-            if (correct) correctAnswers++  // ✅ Count correct answers
+            if (correct) correctAnswers++
 
             responseRepository.submitResponse(
                 responseId,
@@ -140,18 +153,15 @@ class TakeExamActivity : AppCompatActivity() {
                 question.selectedAnswer ?: "",
                 correct,
                 onSuccess = {
-                    Log.d("TakeExamActivity", "Response saved successfully")
+                    Log.d("TakeExamActivity", "Response saved")
                 },
-                onFailure = { e ->
-                    Log.e("TakeExamActivity", "Error saving response", e)
+                onFailure = {
+                    Log.e("TakeExamActivity", "Failed to save response", it)
                 }
             )
         }
 
-        // ✅ Calculate score percentage
         val score = (correctAnswers.toDouble() / totalQuestions) * 100
-
-        // ✅ Save result to Firestore
         saveResultToFirestore(score)
     }
 
@@ -162,34 +172,35 @@ class TakeExamActivity : AppCompatActivity() {
             "score" to score
         )
 
-        val db = FirebaseFirestore.getInstance()
-        db.collection("results") // 🔹 Store results in "results" collection
+        db.collection("results")
             .add(resultData)
             .addOnSuccessListener {
                 isExamSubmitted = true
-                Toast.makeText(this, "Exam submitted successfully!", Toast.LENGTH_SHORT).show()
-                finish() // Close activity
+                AlertDialog.Builder(this)
+                    .setTitle("Exam Submitted")
+                    .setMessage("You scored: ${"%.2f".format(score)}%")
+                    .setPositiveButton("OK") { _, _ -> finish() }
+                    .setCancelable(false)
+                    .show()
             }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error saving result", Toast.LENGTH_SHORT).show()
-                Log.e("TakeExamActivity", "Error saving result", e)
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to save result", Toast.LENGTH_SHORT).show()
+                Log.e("TakeExamActivity", "Error saving result", it)
             }
     }
 
-    // 🔥 Prevent Back Button Until Exam is Submitted
     override fun onBackPressed() {
         if (!isExamSubmitted) {
             AlertDialog.Builder(this)
                 .setTitle("Exit Exam")
                 .setMessage("You cannot leave until you submit the exam.")
-                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                .setPositiveButton("OK", null)
                 .show()
         } else {
             super.onBackPressed()
         }
     }
 
-    // 🔥 Detect App Minimize or Home Button Press
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
         if (!isExamSubmitted) {
@@ -211,7 +222,7 @@ class TakeExamActivity : AppCompatActivity() {
             AlertDialog.Builder(this)
                 .setTitle("Warning!")
                 .setMessage("You cannot minimize or leave the exam page. Please return to the exam.")
-                .setPositiveButton("OK") { _, _ -> }
+                .setPositiveButton("OK", null)
                 .setCancelable(false)
                 .show()
         }
@@ -220,11 +231,13 @@ class TakeExamActivity : AppCompatActivity() {
     private fun isAppInBackground(): Boolean {
         val activityManager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val runningTasks = activityManager.runningAppProcesses
-        return runningTasks.any { it.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND }
+        return runningTasks.any {
+            it.importance != ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        countDownTimer?.cancel() // Stop timer when activity is destroyed
+        countDownTimer?.cancel()
     }
 }
