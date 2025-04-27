@@ -35,4 +35,7 @@
     <!-- Additional Colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="defaultOptionColor">#1C95E0</color>
+
+
 </resources>

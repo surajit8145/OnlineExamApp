@@ -28,6 +28,7 @@
         </activity>
 
         <!-- Other Activities -->
+        <activity android:name=".activities.TakeQuizActivity"/>
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.LoginActivity" android:exported="false" />
 

@@ -60,10 +60,10 @@ class DashboardFragment : Fragment() {
 
         toggleButtons(false, R.id.btnLogin, R.id.btnRegister, R.id.btnExamList, R.id.btnViewResults,
             R.id.btnManageStudents, R.id.btnCreateExam, R.id.btnManageExams, R.id.btnAdminViewResults,
-            R.id.btnAddQuestion, R.id.btnEditQuestion) // Initially hide all buttons
+            R.id.btnAddQuestion, R.id.btnEditQuestion)
 
         if (user == null) {
-            toggleButtons(true, R.id.btnLogin, R.id.btnRegister) // Guest mode
+            toggleButtons(true, R.id.btnLogin, R.id.btnRegister)
         } else {
             userRole = requireContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE)
                 .getString("userRole", null)
@@ -88,10 +88,9 @@ class DashboardFragment : Fragment() {
     }
 
     private fun updateUI() {
-
         when (userRole) {
             "admin" -> toggleButtons(true, R.id.btnManageStudents, R.id.btnCreateExam, R.id.btnManageExams,
-                R.id.btnAdminViewResults, R.id.btnAddQuestion, R.id.btnEditQuestion) // Admin can add/edit questions
+                R.id.btnAdminViewResults, R.id.btnAddQuestion, R.id.btnEditQuestion)
             "student" -> toggleButtons(true, R.id.btnExamList, R.id.btnViewResults)
         }
     }
@@ -103,10 +102,14 @@ class DashboardFragment : Fragment() {
 
     private fun fetchExams() {
         db.collection("exams").get().addOnSuccessListener { documents ->
-            val exams = documents.map { it.toObject(Exam::class.java) }
-            val today = System.currentTimeMillis()
+            val allExams = documents.map { it.toObject(Exam::class.java) }
 
-            val (upcoming, past) = exams.partition { isUpcoming(it.date, today) }
+            // Filter exams that have valid date and time
+            val exams = allExams.filter { !it.date.isNullOrBlank() && !it.time.isNullOrBlank() }
+
+            val currentTimeMillis = System.currentTimeMillis()
+
+            val (upcoming, past) = exams.partition { isUpcoming(it.date, it.time, currentTimeMillis) }
 
             tvTotalExams.text = exams.size.toString()
             tvUpcomingExams.text = upcoming.size.toString()
@@ -119,8 +122,19 @@ class DashboardFragment : Fragment() {
         }
     }
 
-    private fun isUpcoming(examDate: String, today: Long): Boolean {
-        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(examDate)?.time ?: today > today
+    private fun isUpcoming(date: String?, time: String?, currentTimeMillis: Long): Boolean {
+        if (date.isNullOrBlank() || time.isNullOrBlank()) return false
+
+        val dateTimeString = "$date $time" // e.g., "2025-4-19 02:15 PM"
+        val formatter = SimpleDateFormat("yyyy-M-d hh:mm a", Locale.getDefault())
+        formatter.timeZone = TimeZone.getDefault()
+
+        return try {
+            val examTimeMillis = formatter.parse(dateTimeString)?.time
+            examTimeMillis != null && examTimeMillis > currentTimeMillis
+        } catch (e: Exception) {
+            false
+        }
     }
 
     private fun setButtonClickListeners() {
@@ -133,12 +147,13 @@ class DashboardFragment : Fragment() {
             R.id.btnCreateExam to CreateExamActivity::class.java,
             R.id.btnManageExams to ManageExamsActivity::class.java,
             R.id.btnAdminViewResults to AdminViewResultsActivity::class.java,
-            R.id.btnAddQuestion to AddQuestionActivity::class.java, // Added Add Question
-            R.id.btnEditQuestion to EditQuestionActivity::class.java // Added Edit Question
+            R.id.btnAddQuestion to AddQuestionActivity::class.java,
+            R.id.btnEditQuestion to EditQuestionActivity::class.java
         ).forEach { (id, activity) ->
             rootView.findViewById<Button>(id)?.setOnClickListener {
                 startActivity(Intent(requireContext(), activity))
             }
         }
     }
+
 }

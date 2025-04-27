@@ -15,7 +15,7 @@ class QuestionAdapter(
     inner class QuestionViewHolder(private val binding: ItemQuestionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
-            binding.tvQuestion.text = question.questionText
+            binding.tvQuestion.text = question.question
             binding.rbOption1.text = question.options[0]
             binding.rbOption2.text = question.options[1]
             binding.rbOption3.text = question.options[2]

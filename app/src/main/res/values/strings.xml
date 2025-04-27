@@ -60,5 +60,7 @@
 
     <string name="welcome_guest">Welcome to Online Exam App</string>
     <string name="welcome_user">Welcome, %1$s</string>
+        <string name="quiz_result_message">Congratulations, %1$s! Your Score: %2$d/%3$d</string>
+
 
 </resources>

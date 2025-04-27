@@ -1,5 +1,6 @@
 package com.example.onlineexamapp
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import com.example.onlineexamapp.databinding.ActivityMainBinding  // Import for 
 import com.example.onlineexamapp.fragments.DashboardFragment
 import com.example.onlineexamapp.fragments.HomeFragment
 import com.example.onlineexamapp.fragments.ProfileFragment
+import com.example.onlineexamapp.utils.AddWebDesigningQuestions
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,6 +20,13 @@ class MainActivity : AppCompatActivity() {
         // Initialize View Binding:
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)  // Set the content view using the binding
+
+
+        // TEMPORARY: Reset upload flag to allow uploading questions again
+     //  val prefs = getSharedPreferences("question_upload_prefs", Context.MODE_PRIVATE)
+     //  prefs.edit().putBoolean("web_designing_questions_uploaded", false).apply()
+        // ✅ Auto-upload questions (only once)
+        AddWebDesigningQuestions.uploadQuestionsIfNeeded(this)
 
         // Load the HomeFragment when the activity is created:
         loadFragment(HomeFragment())

@@ -111,7 +111,7 @@ class EditQuestionActivity : AppCompatActivity() {
                         Question(
                             id = document.id,
                             examId = selectedExamId,
-                            questionText = document.getString("question") ?: "",
+                            question = document.getString("question") ?: "",
                             options = options.toMutableList(),
                             correctAnswer = document.getString("correctAnswer") ?: ""
                         )
