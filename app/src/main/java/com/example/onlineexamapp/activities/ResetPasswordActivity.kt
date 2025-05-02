@@ -1,120 +1,84 @@
 package com.example.onlineexamapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.onlineexamapp.R
-import com.google.firebase.auth.ActionCodeSettings
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 
 class ResetPasswordActivity : AppCompatActivity() {
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var email: String
-
-    private lateinit var etEmail: EditText
-    private lateinit var btnSendOTP: Button
-    private lateinit var etOTP: EditText
-    private lateinit var btnVerifyOTP: Button
+    private lateinit var etCurrentPassword: EditText
     private lateinit var etNewPassword: EditText
     private lateinit var etConfirmPassword: EditText
     private lateinit var btnUpdatePassword: Button
-    private lateinit var layoutEmail: LinearLayout
-    private lateinit var layoutOTP: LinearLayout
-    private lateinit var layoutNewPassword: LinearLayout
+    private lateinit var progressBar: ProgressBar
+
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reset_password)
 
-        auth = FirebaseAuth.getInstance()
-
-        // UI Elements
-        etEmail = findViewById(R.id.etEmail)
-        btnSendOTP = findViewById(R.id.btnSendOTP)
-        etOTP = findViewById(R.id.etOTP)
-        btnVerifyOTP = findViewById(R.id.btnVerifyOTP)
+        etCurrentPassword = findViewById(R.id.etCurrentPassword)
         etNewPassword = findViewById(R.id.etNewPassword)
         etConfirmPassword = findViewById(R.id.etConfirmPassword)
         btnUpdatePassword = findViewById(R.id.btnUpdatePassword)
-        layoutEmail = findViewById(R.id.layoutEmail)
-        layoutOTP = findViewById(R.id.layoutOTP)
-        layoutNewPassword = findViewById(R.id.layoutNewPassword)
+        progressBar = findViewById(R.id.progressBar)
 
-        // Initially hide OTP and Password fields
-        layoutOTP.visibility = View.GONE
-        layoutNewPassword.visibility = View.GONE
+        auth = FirebaseAuth.getInstance()
 
-        // Step 1: Send OTP to Email
-        btnSendOTP.setOnClickListener {
-            email = etEmail.text.toString().trim()
-            if (email.isEmpty()) {
-                Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            val actionCodeSettings = ActionCodeSettings.newBuilder()
-                .setUrl("https://onlineexamapp.page.link/reset")
-                .setHandleCodeInApp(true)
-                .setAndroidPackageName(packageName, true, null)
-                .build()
-
-            auth.sendSignInLinkToEmail(email, actionCodeSettings)
-                .addOnSuccessListener {
-                    Toast.makeText(this, "OTP sent to your email", Toast.LENGTH_LONG).show()
-                    layoutEmail.visibility = View.GONE
-                    layoutOTP.visibility = View.VISIBLE
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
-        }
-
-        // Step 2: Verify OTP
-        btnVerifyOTP.setOnClickListener {
-            val otp = etOTP.text.toString().trim()
-            if (otp.isEmpty()) {
-                Toast.makeText(this, "Please enter the OTP", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // Simulating OTP verification (you should verify the OTP from Firebase)
-            Toast.makeText(this, "OTP Verified Successfully!", Toast.LENGTH_SHORT).show()
-            layoutOTP.visibility = View.GONE
-            layoutNewPassword.visibility = View.VISIBLE
-        }
-
-        // Step 3: Change Password
         btnUpdatePassword.setOnClickListener {
+            val currentPassword = etCurrentPassword.text.toString().trim()
             val newPassword = etNewPassword.text.toString().trim()
             val confirmPassword = etConfirmPassword.text.toString().trim()
 
-            if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
-                Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show()
+            if (currentPassword.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
             if (newPassword != confirmPassword) {
-                Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "New passwords do not match", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            auth.signInWithEmailAndPassword(email, newPassword)
-                .addOnSuccessListener {
-                    val user = auth.currentUser
-                    user?.updatePassword(newPassword)
-                        ?.addOnSuccessListener {
-                            Toast.makeText(this, "Password Updated Successfully!", Toast.LENGTH_SHORT).show()
-                            finish()
-                        }
-                        ?.addOnFailureListener { e ->
-                            Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-                .addOnFailureListener { e ->
-                    Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+            val user = auth.currentUser
+            val email = user?.email
+
+            if (user != null && email != null) {
+                progressBar.visibility = View.VISIBLE
+                btnUpdatePassword.isEnabled = false
+
+                val credential = EmailAuthProvider.getCredential(email, currentPassword)
+
+                user.reauthenticate(credential)
+                    .addOnSuccessListener {
+                        user.updatePassword(newPassword)
+                            .addOnSuccessListener {
+                                progressBar.visibility = View.GONE
+                                Toast.makeText(this, "Password updated successfully", Toast.LENGTH_SHORT).show()
+                                val intent = Intent(this, ProfileActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
+                                finish()
+                            }
+                            .addOnFailureListener { e ->
+                                progressBar.visibility = View.GONE
+                                btnUpdatePassword.isEnabled = true
+                                Toast.makeText(this, "Update failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        progressBar.visibility = View.GONE
+                        btnUpdatePassword.isEnabled = true
+                        Toast.makeText(this, "Re-authentication failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
         }
     }
 }

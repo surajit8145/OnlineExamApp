@@ -7,20 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.viewModels
+import com.bumptech.glide.Glide
+import com.example.onlineexamapp.R
 import com.example.onlineexamapp.activities.LoginActivity
-import com.example.onlineexamapp.activities.RegisterActivity
 import com.example.onlineexamapp.activities.ProfileActivity
+import com.example.onlineexamapp.activities.RegisterActivity
 import com.example.onlineexamapp.databinding.FragmentProfileBinding
+import com.example.onlineexamapp.viewmodel.ProfileViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var auth: FirebaseAuth
-    private lateinit var db: FirebaseFirestore
+    private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,82 +36,92 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        auth = FirebaseAuth.getInstance()
-        db = FirebaseFirestore.getInstance()
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
-        val user = auth.currentUser
-
-        if (user == null) {
-            // User is NOT logged in.  Show login/register options.
-            showGuestMode()
+        if (currentUser == null) {
+            // Not logged in
+            showNotLoggedInUI()
         } else {
-            // User IS logged in. Show the user's profile.
-            showUserProfile()
+            // Logged in
+            showLoggedInUI()
+            observeUserProfile()
+            profileViewModel.fetchUserProfile()
         }
     }
 
-    private fun showGuestMode() {
-        binding.layoutProfile.visibility = View.GONE
-        binding.layoutGuest.visibility = View.VISIBLE
+    private fun showNotLoggedInUI() {
+        binding.loggedInLayout.visibility = View.GONE
+        binding.notLoggedInLayout.visibility = View.VISIBLE
 
         binding.btnLogin.setOnClickListener {
-            // Start the LoginActivity.
-            val intent = Intent(activity, LoginActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(requireContext(), LoginActivity::class.java))
         }
 
         binding.btnRegister.setOnClickListener {
-            // Start the RegisterActivity.
-            val intent = Intent(activity, RegisterActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(requireContext(), RegisterActivity::class.java))
         }
     }
 
-    private fun showUserProfile() {
-        binding.layoutProfile.visibility = View.VISIBLE
-        binding.layoutGuest.visibility = View.GONE
+    private fun showLoggedInUI() {
+        binding.loggedInLayout.visibility = View.VISIBLE
+        binding.notLoggedInLayout.visibility = View.GONE
 
-        val userId = auth.currentUser?.uid
-        if (userId != null) {
-            db.collection("users").document(userId).get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        // Get user data from the document.  Handle nulls.
-                        val name = document.getString("name") ?: ""
-                        val email = document.getString("email") ?: ""
-                        val phone = document.getString("phone") ?: ""
-                        val role = document.getString("role") ?: ""
+        binding.btnUpdateProfile.setOnClickListener {
+            startActivity(Intent(requireContext(), ProfileActivity::class.java))
+        }
 
-                        // Update the UI with the user's information.
-                        binding.tvName.text = "Name - $name"
-                        binding.tvEmail.text = "Email - $email"
-                        binding.tvPhone.text = "Phone - $phone"
-                        binding.tvRole.text = "Role - ${role.replaceFirstChar { it.uppercase() }}"
+        binding.btnLogout.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
 
+            parentFragmentManager.popBackStack(
+                null,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
 
-                        binding.btnUpdateProfile.setOnClickListener {
-                            startActivity(Intent(activity, ProfileActivity::class.java))
-                        }
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment())
+                .commit()
 
+            Toast.makeText(requireContext(), "Logged out successfully!", Toast.LENGTH_SHORT).show()
+        }
+    }
 
-                        // Set up the logout button's click listener.
-                        binding.btnLogout.setOnClickListener {
-                            auth.signOut() // Sign the user out.
-                            val intent = Intent(activity, LoginActivity::class.java)
-                            startActivity(intent) // Go to LoginActivity.
-                            activity?.finish() // Finish this activity.
-                        }
-                    }
+    private fun observeUserProfile() {
+        profileViewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+        }
+
+        profileViewModel.errorMessage.observe(viewLifecycleOwner) { errorMessage ->
+            errorMessage?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        profileViewModel.userProfile.observe(viewLifecycleOwner) { document ->
+            if (document != null && document.exists()) {
+                val name = document.getString("name") ?: ""
+                val email = document.getString("email") ?: ""
+                val phone = document.getString("phone") ?: ""
+                val role = document.getString("role") ?: ""
+                val profilePicture = document.getString("profile_picture") ?: ""
+
+                binding.tvName.text = "Name - $name"
+                binding.tvEmail.text = "Email - $email"
+                binding.tvPhone.text = "Phone - $phone"
+                binding.tvRole.text = "Role - ${role.replaceFirstChar { it.uppercase() }}"
+
+                if (profilePicture.isNotEmpty()) {
+                    Glide.with(requireContext())
+                        .load(profilePicture)
+                        .circleCrop()
+                        .into(binding.profileImage)
                 }
-                .addOnFailureListener { e ->
-                    // Handle errors when loading the profile.
-                    Toast.makeText(activity, "Failed to load profile: ${e.message}", Toast.LENGTH_SHORT).show()
-                }
+            }
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Clear the binding to prevent memory leaks.
+        _binding = null
     }
 }

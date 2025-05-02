@@ -1,31 +1,42 @@
 package com.example.onlineexamapp.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.onlineexamapp.databinding.ItemResponseBinding
-import com.example.onlineexamapp.models.Response
+import com.example.onlineexamapp.R
+import com.example.onlineexamapp.activities.FullResponse
 
-class ResponseAdapter(private val responseList: List<Response>) :
-    RecyclerView.Adapter<ResponseAdapter.ViewHolder>() {
+class ResponseAdapter(private val responseList: List<FullResponse>) :
+    RecyclerView.Adapter<ResponseAdapter.ResponseViewHolder>() {
 
-    class ViewHolder(val binding: ItemResponseBinding) : RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ItemResponseBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
-        return ViewHolder(binding)
+    class ResponseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val tvQuestionText: TextView = itemView.findViewById(R.id.tvQuestionText)
+        val tvSelectedAnswer: TextView = itemView.findViewById(R.id.tvSelectedAnswer)
+        val tvCorrectAnswer: TextView = itemView.findViewById(R.id.tvCorrectAnswer)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ResponseViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_response, parent, false)
+        return ResponseViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ResponseViewHolder, position: Int) {
         val response = responseList[position]
-        holder.binding.tvQuestionId.text = "Question: ${response.questionId}"
-        holder.binding.tvSelectedAnswer.text = "Answer: ${response.selectedAnswer}"
-        holder.binding.tvCorrect.text = if (response.correct) "✔ Correct" else "✘ Incorrect"
+        holder.tvQuestionText.text = "Q: ${response.questionText}"
+        holder.tvSelectedAnswer.text = "Your Answer: ${response.selectedAnswer}"
+        holder.tvCorrectAnswer.text = "Correct Answer: ${response.correctAnswer}"
+
+        if (response.isCorrect) {
+            holder.tvSelectedAnswer.setTextColor(holder.itemView.context.getColor(R.color.green))
+        } else {
+            holder.tvSelectedAnswer.setTextColor(holder.itemView.context.getColor(R.color.red))
+        }
     }
 
-    override fun getItemCount() = responseList.size
+    override fun getItemCount(): Int {
+        return responseList.size
+    }
 }

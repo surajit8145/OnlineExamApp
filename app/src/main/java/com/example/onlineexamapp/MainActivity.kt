@@ -53,8 +53,10 @@ class MainActivity : AppCompatActivity() {
 
     // Function to load a fragment into the fragment container:
     private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, fragment) // Replace the fragment
-            .commit() // Commit the transaction
+        if (!isFinishing && !supportFragmentManager.isStateSaved) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commitAllowingStateLoss() // Prevents crash if state was saved
+        }
     }
 }

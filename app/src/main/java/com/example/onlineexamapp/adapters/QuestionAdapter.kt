@@ -16,29 +16,45 @@ class QuestionAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(question: Question) {
             binding.tvQuestion.text = question.question
+
             binding.rbOption1.text = question.options[0]
             binding.rbOption2.text = question.options[1]
             binding.rbOption3.text = question.options[2]
             binding.rbOption4.text = question.options[3]
 
-            // Enable click only if editable
+            // Prevent triggering listener when setting checked state
+            binding.radioGroupOptions.setOnCheckedChangeListener(null)
+
+            // ✅ Restore previous selection
+            when (question.selectedAnswer) {
+                binding.rbOption1.text -> binding.rbOption1.isChecked = true
+                binding.rbOption2.text -> binding.rbOption2.isChecked = true
+                binding.rbOption3.text -> binding.rbOption3.isChecked = true
+                binding.rbOption4.text -> binding.rbOption4.isChecked = true
+                else -> binding.radioGroupOptions.clearCheck()
+            }
+
+            // ✅ Set listener AFTER restoring state
             if (isEditable) {
+                binding.radioGroupOptions.setOnCheckedChangeListener { _, checkedId ->
+                    question.selectedAnswer = when (checkedId) {
+                        binding.rbOption1.id -> binding.rbOption1.text.toString()
+                        binding.rbOption2.id -> binding.rbOption2.text.toString()
+                        binding.rbOption3.id -> binding.rbOption3.text.toString()
+                        binding.rbOption4.id -> binding.rbOption4.text.toString()
+                        else -> null
+                    }
+                }
+
                 binding.root.setOnClickListener {
                     onQuestionClick?.invoke(question)
                 }
             } else {
-                binding.root.setOnClickListener(null) // Remove click listener
-            }
-
-            // Handle answer selection
-            binding.radioGroupOptions.setOnCheckedChangeListener { _, checkedId ->
-                question.selectedAnswer = when (checkedId) {
-                    binding.rbOption1.id -> binding.rbOption1.text.toString()
-                    binding.rbOption2.id -> binding.rbOption2.text.toString()
-                    binding.rbOption3.id -> binding.rbOption3.text.toString()
-                    binding.rbOption4.id -> binding.rbOption4.text.toString()
-                    else -> null
-                }
+                binding.root.setOnClickListener(null)
+                binding.rbOption1.isEnabled = false
+                binding.rbOption2.isEnabled = false
+                binding.rbOption3.isEnabled = false
+                binding.rbOption4.isEnabled = false
             }
         }
     }

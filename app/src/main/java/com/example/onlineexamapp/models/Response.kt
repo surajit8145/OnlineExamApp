@@ -1,10 +1,12 @@
 package com.example.onlineexamapp.models
 
 data class Response(
-    val id: String = "", // Auto ID
+    var id: String = "",
     val examId: String = "",
     val studentId: String = "",
     val questionId: String = "",
     val selectedAnswer: String = "",
-    val correct: Boolean = false
+    val correct: Boolean = false,
+    var question: Question? = null // Include Question data
 )
+

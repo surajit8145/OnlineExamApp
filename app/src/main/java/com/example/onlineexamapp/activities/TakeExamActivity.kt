@@ -139,6 +139,7 @@ class TakeExamActivity : AppCompatActivity() {
         val responseRepository = ResponseRepository()
         var correctAnswers = 0
         val totalQuestions = questionList.size
+        var responsesSaved = 0
 
         for (question in questionList) {
             val responseId = "$userId-${question.id}"
@@ -153,16 +154,18 @@ class TakeExamActivity : AppCompatActivity() {
                 question.selectedAnswer ?: "",
                 correct,
                 onSuccess = {
-                    Log.d("TakeExamActivity", "Response saved")
+                    responsesSaved++
+                    // ✅ When all responses are saved, then save the result
+                    if (responsesSaved == totalQuestions) {
+                        val score = (correctAnswers.toDouble() / totalQuestions) * 100
+                        saveResultToFirestore(score)
+                    }
                 },
                 onFailure = {
-                    Log.e("TakeExamActivity", "Failed to save response", it)
+                    Toast.makeText(this, "Failed to save some responses", Toast.LENGTH_SHORT).show()
                 }
             )
         }
-
-        val score = (correctAnswers.toDouble() / totalQuestions) * 100
-        saveResultToFirestore(score)
     }
 
     private fun saveResultToFirestore(score: Double) {

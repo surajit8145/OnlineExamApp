@@ -1,5 +1,6 @@
 package com.example.onlineexamapp.activities
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -270,20 +271,24 @@ class TakeQuizActivity : AppCompatActivity() {
 
     private fun finishQuiz() {
         timer?.cancel()
-        var answeredCorrectly = 0;
+
+        var correctCount = 0
         for (q in questionsList) {
-            if (q.selectedAnswer != null && q.selectedAnswer.equals(q.correctAnswer)) {
-                answeredCorrectly++
+            if (q.selectedAnswer == q.correctAnswer) {
+                correctCount++
             }
         }
-        val message = resources.getString(
-            R.string.quiz_result_message,
-            userName,
-            answeredCorrectly,
-            questionsList.size
-        )
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        finish()
+
+        val message = "Congratulations, $userName!\nScore: $correctCount / ${questionsList.size}"
+
+        AlertDialog.Builder(this)
+            .setTitle("Quiz Completed")
+            .setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("OK") { _, _ ->
+                finish() // Close the activity
+            }
+            .show()
     }
 
     private fun showError(message: String) {

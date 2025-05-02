@@ -40,14 +40,20 @@ class DashboardFragment : Fragment() {
         db = FirebaseFirestore.getInstance()
 
         setupUI()
-        fetchExams()
+
+        val user = auth.currentUser
+        if (user != null) {
+            fetchExams()
+        }
+
         return rootView
     }
 
     private fun setupUI() {
         val user = auth.currentUser
-        rootView.findViewById<TextView>(R.id.tvWelcome).text =
-            "Welcome  ${user?.displayName ?: user?.email ?: " Guest"}"
+
+        val welcomeText = "Welcome ${user?.displayName ?: user?.email ?: "Guest"}"
+        rootView.findViewById<TextView>(R.id.tvWelcome)?.text = welcomeText
 
         rvUpcomingExams = rootView.findViewById(R.id.rvUpcomingExams)
         rvPastExams = rootView.findViewById(R.id.rvPastExams)
@@ -97,7 +103,7 @@ class DashboardFragment : Fragment() {
 
     private fun toggleButtons(visible: Boolean, vararg buttonIds: Int) {
         val visibility = if (visible) View.VISIBLE else View.GONE
-        buttonIds.forEach { rootView.findViewById<Button>(it).visibility = visibility }
+        buttonIds.forEach { rootView.findViewById<Button>(it)?.visibility = visibility }
     }
 
     private fun fetchExams() {
@@ -125,7 +131,7 @@ class DashboardFragment : Fragment() {
     private fun isUpcoming(date: String?, time: String?, currentTimeMillis: Long): Boolean {
         if (date.isNullOrBlank() || time.isNullOrBlank()) return false
 
-        val dateTimeString = "$date $time" // e.g., "2025-4-19 02:15 PM"
+        val dateTimeString = "$date $time"
         val formatter = SimpleDateFormat("yyyy-M-d hh:mm a", Locale.getDefault())
         formatter.timeZone = TimeZone.getDefault()
 
@@ -155,5 +161,4 @@ class DashboardFragment : Fragment() {
             }
         }
     }
-
 }

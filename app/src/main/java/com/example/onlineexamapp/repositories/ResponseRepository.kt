@@ -1,12 +1,13 @@
 package com.example.onlineexamapp.repositories
 
-import android.util.Log
 import com.example.onlineexamapp.models.Response
 import com.google.firebase.firestore.FirebaseFirestore
 
 class ResponseRepository {
+
     private val db = FirebaseFirestore.getInstance()
 
+    // ✅ 1. Save a response (submit response)
     fun submitResponse(
         responseId: String,
         examId: String,
@@ -17,36 +18,38 @@ class ResponseRepository {
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
-        val responseData = hashMapOf(
-            "id" to responseId,
-            "examId" to examId,
-            "studentId" to studentId,
-            "questionId" to questionId,
-            "selectedAnswer" to selectedAnswer,
-            "correct" to correct
+        val response = Response(
+            id = responseId,
+            examId = examId,
+            studentId = studentId,
+            questionId = questionId,
+            selectedAnswer = selectedAnswer,
+            correct = correct
         )
 
         db.collection("responses")
             .document(responseId)
-            .set(responseData)
+            .set(response)
             .addOnSuccessListener { onSuccess() }
             .addOnFailureListener { exception -> onFailure(exception) }
     }
 
-    // ✅ Fetch responses by examId
-    fun getResponsesByExam(examId: String, onComplete: (List<Response>) -> Unit) {
+    // ✅ 2. Get responses by exam and student (already you had it)
+    fun getResponsesByExamAndStudent(examId: String, studentId: String, callback: (List<Response>) -> Unit) {
         db.collection("responses")
             .whereEqualTo("examId", examId)
+            .whereEqualTo("studentId", studentId)
             .get()
-            .addOnSuccessListener { querySnapshot ->
-                val responses = querySnapshot.documents.mapNotNull { document ->
-                    document.toObject(Response::class.java)?.copy(id = document.id)
+            .addOnSuccessListener { result ->
+                val responses = mutableListOf<Response>()
+                for (document in result) {
+                    val response = document.toObject(Response::class.java)
+                    responses.add(response)
                 }
-                onComplete(responses)
+                callback(responses)
             }
-            .addOnFailureListener { exception ->
-                Log.e("ResponseRepository", "Error fetching responses", exception)
-                onComplete(emptyList()) // Return empty list on failure
+            .addOnFailureListener {
+                callback(emptyList()) // If there's an error, return an empty list
             }
     }
 }

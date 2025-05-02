@@ -18,6 +18,14 @@
         android:textStyle="bold"
         android:textColor="@color/primary"
         android:layout_marginBottom="24dp"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/primary"
+        style="?android:attr/progressBarStyleLarge"/>
 
     <!-- Email Input -->
     <com.google.android.material.textfield.TextInputLayout
@@ -67,9 +75,8 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"
-        style="@style/Widget.MaterialComponents.Button.ContainedButton"
-        android:backgroundTint="@color/primary"
+        android:text="LOGIN"
+        android:backgroundTint="@color/button_primary"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_marginBottom="12dp"/>
