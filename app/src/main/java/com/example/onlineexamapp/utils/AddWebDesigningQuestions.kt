@@ -27,153 +27,153 @@ object AddWebDesigningQuestions {
     }
 
     fun uploadQuestions() {
-        val examId = "exam1745790793580" // Hard Level Exam ID
+        val examId = "exam1746431706810" // Easy Level Exam ID
 
         val rawQuestions = listOf(
             Question(
                 id = "",
                 examId = examId,
-                question = "What does HTML stand for?",
-                options = mutableListOf("a) Hyperlinks and Text Markup Language", "b) HyperText Markup Language", "c) Home Tool Markup Language", "d) None"),
-                correctAnswer = "b) HyperText Markup Language"
+                question = "Which service model gives the developer more control over apps?",
+                options = mutableListOf("a) SaaS", "b) PaaS", "c) IaaS", "d) NaaS"),
+                correctAnswer = "b) PaaS"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which tag is used to define an internal style sheet?",
-                options = mutableListOf("a) <script>", "b) <css>", "c) <style>", "d) <link>"),
-                correctAnswer = "c) <style>"
+                question = "Which of these is a PaaS platform?",
+                options = mutableListOf("a) Heroku", "b) Dropbox", "c) GitHub", "d) Skype"),
+                correctAnswer = "a) Heroku"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "In CSS, what does z-index control?",
-                options = mutableListOf("a) Position", "b) Stack order", "c) Opacity", "d) Layout"),
-                correctAnswer = "b) Stack order"
+                question = "Cloud computing architecture includes:",
+                options = mutableListOf("a) Front-end and back-end", "b) Only frontend", "c) Only backend", "d) None"),
+                correctAnswer = "a) Front-end and back-end"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which HTML tag creates a dropdown list?",
-                options = mutableListOf("a) <input>", "b) <dropdown>", "c) <select>", "d) <option>"),
-                correctAnswer = "c) <select>"
+                question = "Which service gives you control over OS and storage?",
+                options = mutableListOf("a) SaaS", "b) PaaS", "c) IaaS", "d) None"),
+                correctAnswer = "c) IaaS"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which CSS property sets the background color?",
-                options = mutableListOf("a) bgcolor", "b) background-color", "c) color", "d) style"),
-                correctAnswer = "b) background-color"
+                question = "Load balancing is used to:",
+                options = mutableListOf("a) Reduce cost", "b) Increase memory", "c) Distribute workload", "d) Increase bandwidth"),
+                correctAnswer = "c) Distribute workload"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "JavaScript is:",
-                options = mutableListOf("a) Server-side", "b) Programming language", "c) Markup language", "d) OS"),
-                correctAnswer = "b) Programming language"
+                question = "Cloud elasticity means:",
+                options = mutableListOf("a) Fixed resources", "b) Resource expansion and reduction", "c) Bouncing services", "d) Sticky data"),
+                correctAnswer = "b) Resource expansion and reduction"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which of these is a JavaScript library?",
-                options = mutableListOf("a) Flask", "b) React", "c) Django", "d) Laravel"),
-                correctAnswer = "b) React"
+                question = "Which model is suitable for software development?",
+                options = mutableListOf("a) SaaS", "b) IaaS", "c) PaaS", "d) DRaaS"),
+                correctAnswer = "c) PaaS"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Bootstrap is used for:",
-                options = mutableListOf("a) Backend", "b) Styling and responsiveness", "c) Hosting", "d) Testing"),
-                correctAnswer = "b) Styling and responsiveness"
+                question = "SLA stands for:",
+                options = mutableListOf("a) Secure Link Access", "b) Software Legal Agreement", "c) Service Level Agreement", "d) Storage Link Application"),
+                correctAnswer = "c) Service Level Agreement"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "What is DOM?",
-                options = mutableListOf("a) Domain Object Model", "b) Document Object Model", "c) Data Object Method", "d) Document Order Method"),
-                correctAnswer = "b) Document Object Model"
+                question = "Which one is not a cloud-based application?",
+                options = mutableListOf("a) Gmail", "b) Google Docs", "c) MS Word (offline)", "d) Zoom"),
+                correctAnswer = "c) MS Word (offline)"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "CSS stands for:",
-                options = mutableListOf("a) Cascading Style Sheets", "b) Custom Style Syntax", "c) Computer Style Sheet", "d) Colorful Style System"),
-                correctAnswer = "a) Cascading Style Sheets"
+                question = "Which layer includes apps in cloud?",
+                options = mutableListOf("a) Application layer", "b) Data link layer", "c) Transport layer", "d) Physical layer"),
+                correctAnswer = "a) Application layer"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "The id selector in CSS uses which symbol?",
-                options = mutableListOf("a) . (dot)", "b) # (hash)", "c) @", "d) &"),
-                correctAnswer = "b) # (hash)"
+                question = "Cloud bursting means:",
+                options = mutableListOf("a) Cloud explosion", "b) Using private cloud until peak, then public", "c) Crashing", "d) None"),
+                correctAnswer = "b) Using private cloud until peak, then public"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which HTML tag inserts a line break?",
-                options = mutableListOf("a) <br>", "b) <hr>", "c) <p>", "d) <line>"),
-                correctAnswer = "a) <br>"
+                question = "Data stored on multiple servers is called:",
+                options = mutableListOf("a) Replication", "b) Duplication", "c) Mirroring", "d) Virtualization"),
+                correctAnswer = "a) Replication"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Responsive design adjusts layout for:",
-                options = mutableListOf("a) One device", "b) All screen sizes", "c) Printers only", "d) Tablets only"),
-                correctAnswer = "b) All screen sizes"
+                question = "Which tool monitors cloud performance?",
+                options = mutableListOf("a) Amazon CloudWatch", "b) MS Excel", "c) Google Meet", "d) GitHub"),
+                correctAnswer = "a) Amazon CloudWatch"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which input type is used for email validation?",
-                options = mutableListOf("a) text", "b) email", "c) password", "d) validate"),
-                correctAnswer = "b) email"
+                question = "Cloud storage is primarily used for:",
+                options = mutableListOf("a) Hosting", "b) Storing data", "c) Processing", "d) Searching"),
+                correctAnswer = "b) Storing data"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "HTML5 introduced:",
-                options = mutableListOf("a) <header>", "b) <font>", "c) <big>", "d) <marquee>"),
-                correctAnswer = "a) <header>"
+                question = "On-demand self-service is a characteristic of:",
+                options = mutableListOf("a) Traditional hosting", "b) Cloud computing", "c) LAN", "d) VPN"),
+                correctAnswer = "b) Cloud computing"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "The <canvas> element is used for:",
-                options = mutableListOf("a) CSS", "b) Graphics", "c) Text only", "d) Video playback"),
-                correctAnswer = "b) Graphics"
+                question = "The layer responsible for resource abstraction is:",
+                options = mutableListOf("a) Infrastructure", "b) Platform", "c) Virtualization", "d) Application"),
+                correctAnswer = "c) Virtualization"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "In JS, === means:",
-                options = mutableListOf("a) Assignment", "b) Strict equality", "c) Loose equality", "d) None"),
-                correctAnswer = "b) Strict equality"
+                question = "Which database service is cloud-native?",
+                options = mutableListOf("a) MySQL", "b) MongoDB Atlas", "c) Oracle 11g", "d) MS Access"),
+                correctAnswer = "b) MongoDB Atlas"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which HTTP status code means \"Not Found\"?",
-                options = mutableListOf("a) 200", "b) 301", "c) 404", "d) 500"),
-                correctAnswer = "c) 404"
+                question = "Multi-tenancy refers to:",
+                options = mutableListOf("a) Shared apps across users", "b) One app per user", "c) Virtual OS", "d) Isolated servers"),
+                correctAnswer = "a) Shared apps across users"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which tag is used to play video in HTML5?",
-                options = mutableListOf("a) <media>", "b) <movie>", "c) <video>", "d) <play>"),
-                correctAnswer = "c) <video>"
+                question = "Which one is NOT an open-source cloud platform?",
+                options = mutableListOf("a) OpenStack", "b) CloudStack", "c) Azure", "d) Eucalyptus"),
+                correctAnswer = "c) Azure"
             ),
             Question(
                 id = "",
                 examId = examId,
-                question = "Which color code is red in Hex?",
-                options = mutableListOf("a) #0000FF", "b) #00FF00", "c) #FF0000", "d) #FFFFFF"),
-                correctAnswer = "c) #FF0000"
+                question = "Which company provides IBM Cloud?",
+                options = mutableListOf("a) Oracle", "b) Microsoft", "c) IBM", "d) Google"),
+                correctAnswer = "c) IBM"
             )
         )
 
         val questionsList = rawQuestions.mapIndexed { index, question ->
-            question.copy(id = "QuizHardQ${index + 1}")
+            question.copy(id = "QuizMediumQ${index + 1}")
         }
 
         for (question in questionsList) {

@@ -41,4 +41,23 @@
     <color name="red">#F44336</color>
     <color name="defaultOptionColor">#1C95E0</color>
 
+    <color name="gradient_start">#237BAF</color>
+    <color name="gradient_end">#B0BBCE</color>
+    <color name="gradient_center">#82CEC5</color>
+
+    <color name="soft_blue">#4AA3F6</color> <!-- Or your desired blue shade -->
+
+
+
+         <color name="background_light">#f0f4f8</color> <color name="accent_purple">#9b59b6</color>
+        <color name="accent_green">#2ecc71</color>
+        <color name="accent_blue">#3498db</color>
+
+
+
+    <color name="text_color_primary">#212121</color> <color name="text_color_secondary">#757575</color> <color name="icon_tint_primary">#212121</color>
+    <color name="icon_tint_secondary">#757575</color>
+    <color name="profile_picture_border_color">#BDBDBD</color> <color name="your_primary_color">#FF0000</color>
+    <color name="star_gold">#FFD700</color>
+
 </resources>

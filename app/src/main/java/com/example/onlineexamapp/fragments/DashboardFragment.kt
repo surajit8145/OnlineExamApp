@@ -33,6 +33,7 @@ class DashboardFragment : Fragment() {
     private lateinit var tvTotalExams: TextView
     private lateinit var tvUpcomingExams: TextView
     private lateinit var tvPastExams: TextView
+    private lateinit var progressBar: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         rootView = inflater.inflate(R.layout.fragment_dashboard, container, false)
@@ -63,7 +64,9 @@ class DashboardFragment : Fragment() {
 
         rvUpcomingExams.layoutManager = LinearLayoutManager(requireContext())
         rvPastExams.layoutManager = LinearLayoutManager(requireContext())
+        progressBar = rootView.findViewById(R.id.progressBar)
 
+        // ✅ Always hide everything first
         toggleButtons(false, R.id.btnLogin, R.id.btnRegister, R.id.btnExamList, R.id.btnViewResults,
             R.id.btnManageStudents, R.id.btnCreateExam, R.id.btnManageExams, R.id.btnAdminViewResults,
             R.id.btnAddQuestion, R.id.btnEditQuestion)
@@ -71,35 +74,42 @@ class DashboardFragment : Fragment() {
         if (user == null) {
             toggleButtons(true, R.id.btnLogin, R.id.btnRegister)
         } else {
-            userRole = requireContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE)
-                .getString("userRole", null)
-
-            userRole?.let { updateUI() } ?: fetchUserRole(user.uid)
+            // Force refresh role from Firestore every time (avoid stale SharedPrefs)
+            fetchUserRole(user.uid)
         }
 
         setButtonClickListeners()
     }
 
     private fun fetchUserRole(userId: String) {
+        showLoading()
         db.collection("users").document(userId).get().addOnSuccessListener { document ->
             userRole = document.getString("role") ?: "student"
-            requireContext().getSharedPreferences("UserPref", Context.MODE_PRIVATE).edit()
-                .putString("userRole", userRole).apply()
+
             updateUI()
         }.addOnFailureListener {
             Toast.makeText(activity, "Error fetching role, defaulting to student.", Toast.LENGTH_SHORT).show()
             userRole = "student"
             updateUI()
+        }.addOnCompleteListener {
+            hideLoading()
         }
     }
 
     private fun updateUI() {
+        // Hide all first
+        toggleButtons(false, R.id.btnLogin, R.id.btnRegister, R.id.btnExamList, R.id.btnViewResults,
+            R.id.btnManageStudents, R.id.btnCreateExam, R.id.btnManageExams, R.id.btnAdminViewResults,
+            R.id.btnAddQuestion, R.id.btnEditQuestion)
+
         when (userRole) {
             "admin" -> toggleButtons(true, R.id.btnManageStudents, R.id.btnCreateExam, R.id.btnManageExams,
                 R.id.btnAdminViewResults, R.id.btnAddQuestion, R.id.btnEditQuestion)
             "student" -> toggleButtons(true, R.id.btnExamList, R.id.btnViewResults)
         }
+
     }
+
 
     private fun toggleButtons(visible: Boolean, vararg buttonIds: Int) {
         val visibility = if (visible) View.VISIBLE else View.GONE
@@ -110,8 +120,12 @@ class DashboardFragment : Fragment() {
         db.collection("exams").get().addOnSuccessListener { documents ->
             val allExams = documents.map { it.toObject(Exam::class.java) }
 
-            // Filter exams that have valid date and time
-            val exams = allExams.filter { !it.date.isNullOrBlank() && !it.time.isNullOrBlank() }
+            // Filter exams that have valid date/time and subject not "quiz"
+            val exams = allExams.filter {
+                !it.date.isNullOrBlank() &&
+                        !it.time.isNullOrBlank() &&
+                        !it.subject.equals("quiz", ignoreCase = true)
+            }
 
             val currentTimeMillis = System.currentTimeMillis()
 
@@ -145,8 +159,8 @@ class DashboardFragment : Fragment() {
 
     private fun setButtonClickListeners() {
         mapOf(
-            R.id.btnLogin to LoginActivity::class.java,
-            R.id.btnRegister to RegisterActivity::class.java,
+            R.id.btnLogin to AuthActivity::class.java,
+            R.id.btnRegister to AuthActivity::class.java,
             R.id.btnExamList to ExamListActivity::class.java,
             R.id.btnViewResults to ViewResultsActivity::class.java,
             R.id.btnManageStudents to ManageStudentsActivity::class.java,
@@ -161,4 +175,14 @@ class DashboardFragment : Fragment() {
             }
         }
     }
+    private fun showLoading() {
+        progressBar.visibility = View.VISIBLE
+        rootView.findViewById<ViewGroup>(R.id.dashboardMainContainer)?.visibility = View.GONE
+    }
+
+    private fun hideLoading() {
+        progressBar.visibility = View.GONE
+        rootView.findViewById<ViewGroup>(R.id.dashboardMainContainer)?.visibility = View.VISIBLE
+    }
+
 }

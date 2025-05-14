@@ -37,5 +37,9 @@
     <color name="white">#FFFFFF</color>
     <color name="defaultOptionColor">#1C95E0</color>
 
+    <color name="gradient_start">#0F2027</color>
+    <color name="gradient_end">#6DD5ED</color>
+    <color name="gradient_center">#2C5364</color>
 
+    <color name="background_light">#8C1A1A1A</color>
 </resources>

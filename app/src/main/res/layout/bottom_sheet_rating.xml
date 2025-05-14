@@ -1,0 +1,93 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_button_container2">
+
+    <!-- Close button -->
+    <ImageView
+        android:id="@+id/closeButton"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="end"
+        android:src="@drawable/ic_close"
+        android:contentDescription="Close"
+        android:padding="8dp"
+        android:onClick="closeButtonClicked" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_marginTop="25dp"
+        android:gravity="center">
+
+        <!-- Animated Icon -->
+        <ImageView
+            android:id="@+id/sheetIcon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_logo"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="18dp"/>
+    <TextView
+        android:id="@+id/ratingTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rate the App"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:numStars="5"
+        android:stepSize="1"
+        android:progressTint="@color/star_gold"
+        android:isIndicator="false"
+        style="@style/Widget.AppCompat.RatingBar.Indicator" />
+
+
+    <TextView
+        android:id="@+id/ratingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="20dp"
+        android:textColor="@color/text_primary" />
+
+
+
+    <Button
+        android:id="@+id/submitRating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:backgroundTint="@color/primary"
+        android:textColor="@android:color/white" />
+
+    <!-- ✅ Add this message box -->
+    <TextView
+        android:id="@+id/thankYouMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        android:background="@android:color/darker_gray"
+        android:padding="16dp"
+        android:layout_marginTop="20dp"
+        android:visibility="gone" />
+
+</LinearLayout>
+</LinearLayout>

@@ -26,8 +26,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var etPhone: EditText
     private lateinit var tvEmail: TextView
     private lateinit var btnUpdate: Button
-    private lateinit var btnChangePassword: Button
-    private lateinit var btnBack: Button
+    private lateinit var btnChangePassword: TextView
     private lateinit var profileImageView: ImageView
 
     private val imagePickerLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -49,7 +48,6 @@ class ProfileActivity : AppCompatActivity() {
         tvEmail = findViewById(R.id.tvEmail)
         btnUpdate = findViewById(R.id.btnUpdate)
         btnChangePassword = findViewById(R.id.btnChangePassword)
-        btnBack = findViewById(R.id.btnBack)
         profileImageView = findViewById(R.id.ivProfileImage)
 
         loadUserProfile()
@@ -58,12 +56,10 @@ class ProfileActivity : AppCompatActivity() {
             updateUserProfile()
         }
 
+        // Set the click listener
         btnChangePassword.setOnClickListener {
-            startActivity(Intent(this, ResetPasswordActivity::class.java))
-        }
-
-        btnBack.setOnClickListener {
-            finish()
+            val intent = Intent(this, ResetPasswordActivity::class.java)
+            startActivity(intent)
         }
 
         profileImageView.setOnClickListener {

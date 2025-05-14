@@ -37,4 +37,13 @@
         <item name="colorOnError">@color/white</item>
     </style>
 
+
+    <style name="Theme.OnlineExamApp.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+
+
 </resources>

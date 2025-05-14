@@ -19,21 +19,24 @@
         android:theme="@style/Theme.OnlineExamApp"
         tools:targetApi="31">
 
-        <!-- Main Activity with Bottom Navigation (Launcher Activity) -->
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreenActivity"
             android:exported="true"
-            android:theme="@style/Theme.OnlineExamApp">
+            android:theme="@style/Theme.OnlineExamApp.Splash">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+
+        <activity android:name=".MainActivity" />
+
+
         <!-- Other Activities -->
         <activity android:name=".activities.TakeQuizActivity"/>
-        <activity android:name=".activities.RegisterActivity" />
-        <activity android:name=".activities.LoginActivity" android:exported="false" />
+
 
         <activity android:name=".activities.ManageExamsActivity" />
         <activity android:name=".activities.TakeExamActivity" />
@@ -57,7 +60,10 @@
 
         <activity android:name=".activities.ResetPasswordActivity" />
         <activity android:name=".activities.ForgetPasswordActivity" />
-        <activity android:name=".activities.StudentResultsActivity" />
+        <activity android:name=".activities.EmailVerificationActivity"/>
+        <activity android:name=".activities.AuthActivity"/>
+        <activity android:name=".activities.CreateAnnouncementActivity"/>
+
 
     </application>
 

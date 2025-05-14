@@ -5,10 +5,8 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.onlineexamapp.R
-import com.example.onlineexamapp.adapters.QuestionAdapter
+import com.example.onlineexamapp.adapters.EditQuestionAdapter
 import com.example.onlineexamapp.databinding.ActivityEditQuestionBinding
 import com.example.onlineexamapp.models.Question
 import com.google.firebase.auth.FirebaseAuth
@@ -19,7 +17,6 @@ class EditQuestionActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditQuestionBinding
     private lateinit var db: FirebaseFirestore
     private var selectedExamId: String = ""
-    private var selectedQuestionId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,24 +57,11 @@ class EditQuestionActivity : AppCompatActivity() {
                 val examIds = binding.spinnerExam.tag as? List<String> ?: return
                 if (position < examIds.size) {
                     selectedExamId = examIds[position]
-                    clearEditForm()
                     loadQuestions()
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-
-        binding.btnUpdateQuestion.setOnClickListener {
-            updateQuestion()
-        }
-
-        // Disable update button until a question is selected
-        binding.btnUpdateQuestion.isEnabled = false
-
-        // Enable update button only when text is modified
-        binding.etEditQuestion.doOnTextChanged { _, _, _, _ ->
-            binding.btnUpdateQuestion.isEnabled = true
         }
     }
 
@@ -98,9 +82,10 @@ class EditQuestionActivity : AppCompatActivity() {
     }
 
     private fun loadQuestions() {
-        if (selectedExamId.isEmpty()) return // Prevent Firestore crash
+        if (selectedExamId.isEmpty()) return
 
         binding.progressBar.visibility = View.VISIBLE
+
         db.collection("questions").whereEqualTo("examId", selectedExamId).get()
             .addOnSuccessListener { documents ->
                 val questionList = mutableListOf<Question>()
@@ -118,13 +103,13 @@ class EditQuestionActivity : AppCompatActivity() {
                     )
                 }
 
-                binding.recyclerViewQuestions.adapter = QuestionAdapter(
+                val adapter = EditQuestionAdapter(
                     questionList,
-                    isEditable = true
-                ) { selectedQuestion ->
-                    loadQuestionDetails(selectedQuestion.id)
-                }
+                    { updatedQuestion -> updateQuestionInFirestore(updatedQuestion) },
+                    { questionToDelete -> deleteQuestionFromFirestore(questionToDelete) }  // Pass delete callback
+                )
 
+                binding.recyclerViewQuestions.adapter = adapter
                 binding.progressBar.visibility = View.GONE
             }
             .addOnFailureListener {
@@ -132,64 +117,30 @@ class EditQuestionActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }
     }
-
-    private fun loadQuestionDetails(questionId: String) {
-        selectedQuestionId = questionId
-        db.collection("questions").document(questionId).get()
-            .addOnSuccessListener { document ->
-                if (!isFinishing) {  // ✅ FIXED: Removed isInitialized check
-
-                    binding.etEditQuestion.setText(document.getString("question"))
-
-                    val options = (document.get("options") as? List<*>)?.map { it.toString() } ?: emptyList()
-                    binding.etEditOption1.setText(options.getOrNull(0) ?: "")
-                    binding.etEditOption2.setText(options.getOrNull(1) ?: "")
-                    binding.etEditOption3.setText(options.getOrNull(2) ?: "")
-                    binding.etEditOption4.setText(options.getOrNull(3) ?: "")
-                    binding.etEditCorrectAnswer.setText(document.getString("correctAnswer"))
-
-                    binding.layoutEditQuestion.visibility = View.VISIBLE
-                    binding.btnUpdateQuestion.isEnabled = true
-                }
-            }
-    }
-
-
-    private fun updateQuestion() {
-        if (selectedQuestionId.isEmpty()) {
-            Toast.makeText(this, "No question selected!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val updatedData = mapOf(
-            "question" to binding.etEditQuestion.text.toString(),
-            "options" to listOf(
-                binding.etEditOption1.text.toString(),
-                binding.etEditOption2.text.toString(),
-                binding.etEditOption3.text.toString(),
-                binding.etEditOption4.text.toString()
-            ),
-            "correctAnswer" to binding.etEditCorrectAnswer.text.toString()
-        )
-
-        db.collection("questions").document(selectedQuestionId).update(updatedData)
+    private fun deleteQuestionFromFirestore(question: Question) {
+        db.collection("questions").document(question.id).delete()
             .addOnSuccessListener {
-                Toast.makeText(this, "Question Updated!", Toast.LENGTH_SHORT).show()
-                binding.layoutEditQuestion.visibility = View.GONE
-                loadQuestions()
+                Toast.makeText(this, "Question deleted successfully", Toast.LENGTH_SHORT).show()
+                loadQuestions() // Refresh the list after deletion
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to update question!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to delete question", Toast.LENGTH_SHORT).show()
             }
     }
 
-    private fun clearEditForm() {
-        binding.etEditQuestion.text?.clear()
-        binding.etEditOption1.text?.clear()
-        binding.etEditOption2.text?.clear()
-        binding.etEditOption3.text?.clear()
-        binding.etEditOption4.text?.clear()
-        binding.etEditCorrectAnswer.text?.clear()
-        binding.layoutEditQuestion.visibility = View.GONE
+    private fun updateQuestionInFirestore(question: Question) {
+        val updatedData = mapOf(
+            "question" to question.question,
+            "options" to question.options,
+            "correctAnswer" to question.correctAnswer
+        )
+
+        db.collection("questions").document(question.id).update(updatedData)
+            .addOnSuccessListener {
+                Toast.makeText(this, "Question updated", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Failed to update question", Toast.LENGTH_SHORT).show()
+            }
     }
 }

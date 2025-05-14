@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/card_background"
+    tools:context=".fragments.AdminPanelFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_large"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="👑"
+                android:textSize="30sp"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/tvAdminPanelTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Admin Control Panel"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🛠️ User &amp; Exam Management"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/accent_blue"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Oversee user accounts and manage exam schedules."
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="12dp"/>
+
+
+        <Button
+            android:id="@+id/btnManageStudents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Manage Students"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_students"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <Button
+            android:id="@+id/btnCreateExam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create New Exam"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_create_exam"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <Button
+            android:id="@+id/btnManageExams"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Manage Existing Exams"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_manage_exams"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="❓ Question Bank"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/accent_green"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add, edit, or review questions available for exams."
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="12dp"/>
+
+
+        <Button
+            android:id="@+id/btnAddQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add New Question"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_add_question"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <Button
+            android:id="@+id/btnEditQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit/View Questions"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_edit_questions"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📢 Announcements &amp; Results"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            android:textColor="@color/accent_purple"
+            android:layout_marginBottom="4dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Communicate important updates and review exam results."
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/text_secondary"
+            android:layout_marginBottom="12dp"/>
+
+
+        <Button
+            android:id="@+id/btnCreateAnnouncement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create New Announcement"
+            android:layout_marginBottom="8dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"/>
+
+        <Button
+            android:id="@+id/btnAdminViewResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View All Results"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_results"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+    </LinearLayout>
+</ScrollView>

@@ -22,6 +22,12 @@ kotlinxCoroutines = "0.19.2"
 kotlinxCoroutinesPlayServices = "1.10.2"
 activityKtx = "1.7.2"
 appcompatVersion = "1.6.1"
+securityCrypto = "1.0.0"
+securityCryptoVersion = "1.1.0-alpha06"
+credentials = "1.5.0"
+espressoCoreVersion = "3.5.1"
+composeBom = "2025.04.01"
+swiperefreshlayout = "1.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +50,12 @@ kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutin
 kotlinx-coroutines-play-services = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-play-services", version.ref = "kotlinxCoroutinesPlayServices" }
 androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
 appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompatVersion" }
+androidx-security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCrypto" }
+security-crypto = { group = "androidx.security", name = "security-crypto", version.ref = "securityCryptoVersion" }
+androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
+espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

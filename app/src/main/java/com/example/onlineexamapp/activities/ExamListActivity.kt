@@ -117,7 +117,8 @@ class ExamListActivity : AppCompatActivity() {
                         for (document in documents) {
                             val exam = document.toObject(Exam::class.java).apply { id = document.id }
 
-                            if (exam.date.isEmpty() || exam.time.isEmpty()) continue
+                            // Filter: skip if date/time is empty OR subject is "quiz"
+                            if (exam.date.isEmpty() || exam.time.isEmpty() || exam.subject.equals("quiz", ignoreCase = true)) continue
 
                             val startTime = try {
                                 dateFormat.parse("${exam.date} ${exam.time}")?.time ?: continue

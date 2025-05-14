@@ -1,170 +1,349 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#e0f7fa"> <LinearLayout
+    android:background="@color/background_light"> <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="25dp"
-
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
-
-        <TextView
-            android:id="@+id/tvAppName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Online Examination"
-            android:textSize="28sp"
-            android:textStyle="bold"
-            android:textColor="#003366" />
-        <!--<ImageView
-        android:id="@+id/ivSearch"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_notification"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:padding="8dp"
-        app:tint="#01466B" /> -->
-    </RelativeLayout>
+    android:padding="@dimen/padding_medium"> <LinearLayout
+    android:id="@+id/logged_in_header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:visibility="gone"
+    tools:visibility="visible">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="6dp"
-        android:layout_marginBottom="25dp">
-
+        android:layout_width="@dimen/avatar_size"
+        android:layout_height="@dimen/avatar_size"
+        app:cardCornerRadius="@dimen/avatar_corner_radius"
+        android:elevation="@dimen/card_elevation">
         <ImageView
-            android:id="@+id/ivBanner"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@drawable/exam_banner"
-            android:contentDescription="Exam Banner" />
-
+        android:id="@+id/profile_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile"
+        tools:src="@tools:sample/avatars"
+        android:clipToOutline="true"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/profile_picture_description"/>
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/tvWelcome"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Welcome User to the Online Exam System"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:textColor="#002140"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginStart="@dimen/margin_medium" android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvAppDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Enhance your learning and test your knowledge with our online exam platform. Access a variety of exams, track your progress, and improve your scores."
-        android:textSize="16sp"
-        android:textColor="#263238"
-        android:layout_marginTop="12dp"
-        android:gravity="center"
-        android:lineSpacingMultiplier="1.3" />
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+            android:textColor="@color/text_primary"
+            tools:text="John Doe" />
+
+        <TextView
+            android:id="@+id/user_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="@color/text_secondary"
+            tools:text="Student" />
+    </LinearLayout>
+</LinearLayout>
 
     <LinearLayout
+        android:id="@+id/guest_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        tools:visibility="gone">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/app_name"
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineLarge"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/motivational_guest_text"
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            android:textColor="@color/text_secondary"
+            android:layout_marginStart="@dimen/margin_small"/> </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_large" /> <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/banner_carousel"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/banner_height" android:clipToPadding="false"
+        android:clipChildren="false"/>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/banner_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/tab_indicator_height" android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/tab_indicator_margin_top" app:tabBackground="@drawable/tab_indicator_selector"
+        app:tabIndicatorColor="@android:color/transparent"
+        app:tabMaxWidth="@dimen/tab_indicator_max_width" app:tabMinWidth="@dimen/tab_indicator_min_width" app:tabRippleColor="@android:color/transparent" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_large" />
+    <TextView
+        android:id="@+id/study_materials_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_item"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/study_materials"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/card_background"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
+
+    <TextView
+        android:id="@+id/study_materials_locked_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_item" android:text="@string/login_to_access"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/accent_purple" android:visibility="gone"
+        tools:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_large" /> <TextView
+        android:id="@+id/practice_quizzes_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_item"
+        android:padding="@dimen/padding_medium"
+        android:text="@string/practice_quizzes"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@color/card_background"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"/>
+
+    <TextView
+        android:id="@+id/practice_quizzes_locked_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top_item"
+        android:text="@string/login_to_access_quizzes"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="@color/accent_purple"
+        android:visibility="gone"
+        tools:visibility="gone" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_large" /> <LinearLayout
+        android:id="@+id/quick_actions_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="30dp">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/quick_actions"
+            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
+
+        <GridLayout
+            android:id="@+id/quick_actions_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Get Started"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="#003366"
-            android:layout_marginBottom="18dp"
-            android:gravity="center"/>
+            android:layout_marginTop="@dimen/margin_top_item" android:columnCount="3"
+            android:rowCount="2">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/action_take_exam"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/margin_grid_item" android:text="@string/take_exam"
+                app:cornerRadius="@dimen/margin_small" android:insetTop="0dp"
+                android:insetBottom="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/action_view_results"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/margin_grid_item" android:text="@string/view_results"
+                app:cornerRadius="@dimen/margin_small" android:insetTop="0dp"
+                android:insetBottom="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/action_exam_history"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/margin_grid_item" android:text="@string/exam_history"
+                app:cornerRadius="@dimen/margin_small" android:insetTop="0dp"
+                android:insetBottom="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/action_profile"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/margin_grid_item" android:text="@string/profile"
+                app:cornerRadius="@dimen/margin_small" android:insetTop="0dp"
+                android:insetBottom="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/action_settings"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/margin_grid_item" android:text="@string/settings"
+                app:cornerRadius="@dimen/margin_small" android:insetTop="0dp"
+                android:insetBottom="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/action_help"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_rowWeight="1"
+                android:layout_columnWeight="1"
+                android:layout_margin="@dimen/margin_grid_item" android:text="@string/help"
+                app:cornerRadius="@dimen/margin_small" android:insetTop="0dp"
+                android:insetBottom="0dp" />
+        </GridLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_large" /> </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/announcements"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/announcementsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+    android:layout_marginTop="@dimen/margin_top_item"
+    android:backgroundTint="@null"
+    tools:listitem="@layout/item_announcement" />
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_large" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="@dimen/card_elevation"
+        android:backgroundTint="@color/card_background">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="2"
-            android:gravity="center">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewTakeQuiz"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                android:layout_margin="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:src="@drawable/ic_exam"
-                        android:contentDescription="Take a Quiz"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Take a Quiz"
-                        android:textSize="16sp"
-                        android:textColor="#2c3e50"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewStudyMaterials"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                android:layout_margin="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="64dp"
-                        android:layout_height="64dp"
-                        android:src="@drawable/ic_study"
-                        android:contentDescription="Study Materials"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Study Materials"
-                        android:textSize="16sp"
-                        android:textColor="#2c3e50"
-                        android:layout_marginTop="8dp"
-                        android:gravity="center"/>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium">
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/tip_of_the_day"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:textStyle="bold"
+            android:textColor="@color/accent_green" />
+            <TextView
+            android:id="@+id/tip_of_the_day_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            tools:text="Stay consistent with your study schedule."
+            android:textColor="@color/text_secondary" />
         </LinearLayout>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_large" /> <androidx.cardview.widget.CardView
+        android:id="@+id/login_register_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/card_corner_radius" app:cardElevation="@dimen/card_elevation" android:visibility="gone"
+        tools:visibility="visible"
+        android:backgroundTint="@color/card_background">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_large">
+            <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/login_register_message"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+            android:textColor="@color/accent_blue" />
+            <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large" android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login"
+                app:cornerRadius="@dimen/margin_small" android:insetTop="0dp"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:insetBottom="0dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_medium" android:text="@string/register"
+                app:cornerRadius="@dimen/margin_small" style="@style/Widget.Material3.Button.OutlinedButton"
+                android:insetTop="0dp"
+                android:insetBottom="0dp" />
+        </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </LinearLayout>
 </ScrollView>

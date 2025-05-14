@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Title TextView -->
+    <TextView
+        android:id="@+id/tvEmailInfo"
+        android:text="We've sent a verification link to your new email."
+        android:textSize="18sp"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:fontFamily="sans-serif-medium"/>
+
+    <!-- ProgressBar for verification status -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"/>
+
+    <!-- Button for checking email verification -->
+    <Button
+        android:id="@+id/btnCheckVerified"
+        android:text="I've Verified My Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/button_primary"
+        android:textColor="@color/text_primary"
+        android:enabled="true"/>
+
+    <!-- Button for resending verification email -->
+    <Button
+        android:id="@+id/btnResend"
+        android:text="Resend Verification Email"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/button_primary"
+        android:textColor="@color/text_primary"
+        android:enabled="true"/>
+    <TextView
+        android:id="@+id/tvResendMessage"
+        android:text="Please wait a minute before requesting a resend.  "
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" /> <!-- Hidden initially -->
+
+
+    <!-- Additional Info about verifying email -->
+    <TextView
+        android:id="@+id/tvInstructions"
+        android:text="To verify your email address, please check your inbox for a verification email. Follow the instructions in the email to complete the process."
+        android:textSize="16sp"
+        android:textColor="@color/text_primary"
+        android:layout_marginTop="24dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="4dp"/>
+
+    <!-- Troubleshooting tips -->
+    <TextView
+        android:id="@+id/tvTroubleshooting"
+        android:text="If you don't see the email, please check your spam or junk folder. If you're still having trouble, click 'Resend Verification Email'."
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"/>
+
+    <!-- TextView for additional info, such as a warning -->
+    <TextView
+        android:id="@+id/tvAdditionalInfo"
+        android:text="You can also verify your email by visiting the verification page directly."
+        android:textSize="14sp"
+        android:textColor="@color/text_secondary"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2dp"/>
+
+</LinearLayout>

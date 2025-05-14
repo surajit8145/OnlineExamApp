@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OnlineExamApp</string>
+    <string name="app_name">ExamPilot</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -61,6 +61,85 @@
     <string name="welcome_guest">Welcome to Online Exam App</string>
     <string name="welcome_user">Welcome, %1$s</string>
         <string name="quiz_result_message">Congratulations, %1$s! Your Score: %2$d/%3$d</string>
+
+    <string name="motivational_guest_text">🎯 Prepare for success!</string>
+    <string name="study_materials">📚 Study Materials</string>
+    <string name="practice_quizzes">🧠 Practice Quizzes</string>
+    <string name="upcoming_exams">⏳ Upcoming Exams</string>
+    <string name="quick_actions">⚡ Quick Actions</string>
+    <string name="announcements">📢 Announcements</string>
+    <string name="tip_of_the_day">💡 Tip of the Day</string>
+
+    <string name="take_exam">📝 Take Exam</string>
+    <string name="view_results">📊 View Results</string>
+    <string name="exam_history">🕘 Exam History</string>
+    <string name="profile">👤 Profile</string>
+    <string name="settings">⚙️ Settings</string>
+    <string name="help">❓ Help</string>
+
+    <string name="login_to_access">🔒 Login to access more study materials.</string>
+    <string name="login_to_access_quizzes">🔒 Login to access practice quizzes.</string>
+    <string name="login_register_message">🔓 Unlock all features and start your exam preparation journey!</string>
+
+    <string name="login">🔐 Login</string>
+    <string name="register">🆕 Register</string>
+
+    <string name="default_user_name">👥 Guest User</string>
+    <string name="default_user_role">🚫 Not Logged In</string>
+
+    <string name="study_material_title_placeholder">📘 Subject Note Title</string>
+    <string name="practice_quiz_title_placeholder">📋 Quiz Title</string>
+    <string name="upcoming_exam_title_placeholder">🗓️ Exam Title</string>
+    <string name="upcoming_exam_time_placeholder">🕒 Date &amp; Time</string>
+    <string name="start">▶️ Start</string>
+
+    <string name="announcement_title_placeholder">📣 Announcement Title</string>
+    <string name="announcement_date_placeholder">📅 Date</string>
+    <string name="tip_placeholder">📌 Study smarter, not harder.</string>
+
+        <string-array name="tips_of_the_day">
+            <item>Stay consistent with your study schedule.</item>
+            <item>Practice makes perfect. Do quizzes regularly.</item>
+            <item>Review your notes before exams.</item>
+            <item>Get enough sleep before your exam.</item>
+            <item>Stay hydrated and eat well during exams.</item>
+            <item>Focus on understanding, not just memorization.</item>
+            <item>Manage your time effectively during exams.</item>
+            <item>Believe in yourself; you can do it!</item>
+        </string-array>
+
+    <string name="profile_picture_description">User profile picture</string> <string name="dialog_enter_name">Enter your name</string>
+
+        <string name="profile_title">Profile</string>
+        <string name="back_button_description">Back</string>
+        <string name="edit_profile_text">Edit Profile</string>
+        <string name="edit_profile_description">Edit profile</string>
+        <string name="navigate_to_edit_profile">Navigate to edit profile</string>
+        <string name="login_text">Login</string>
+        <string name="login_icon_description">Login icon</string>
+        <string name="navigate_to_login">Navigate to login page</string>
+        <string name="general_settings_title">General Settings</string>
+        <string name="mode_icon_description">Mode icon</string>
+        <string name="mode_setting_text">Mode</string>
+        <string name="mode_status_text">Dark &amp; Light</string>
+        <string name="language_icon_description">Language icon</string>
+        <string name="language_setting_text">Language</string>
+        <string name="navigate_to_language_settings">Navigate to language settings</string>
+        <string name="about_icon_description">About icon</string>
+        <string name="about_setting_text">About</string>
+        <string name="navigate_to_about_page">Navigate to about page</string>
+        <string name="terms_icon_description">Terms and Conditions icon</string>
+        <string name="terms_setting_text">Terms &amp; Conditions</string>
+        <string name="navigate_to_terms_page">Navigate to terms and conditions page</string>
+        <string name="privacy_icon_description">Privacy Policy icon</string>
+        <string name="privacy_setting_text">Privacy Policy</string>
+        <string name="navigate_to_privacy_policy">Navigate to privacy policy page</string>
+        <string name="rate_app_icon_description">Rate this app icon</string>
+        <string name="rate_app_setting_text">Rate This App</string>
+        <string name="navigate_to_rate_app">Navigate to rate this app</string>
+        <string name="share_app_icon_description">Share this app icon</string>
+        <string name="share_app_setting_text">Share This App</string>
+        <string name="share_app_action">Share this app</string>
 
 
 </resources>
