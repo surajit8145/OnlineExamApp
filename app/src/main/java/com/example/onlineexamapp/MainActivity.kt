@@ -1,17 +1,27 @@
 package com.example.onlineexamapp
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.example.onlineexamapp.databinding.ActivityMainBinding
 import com.example.onlineexamapp.fragments.*
 import com.example.onlineexamapp.utils.AddWebDesigningQuestions
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import androidx.navigation.ui.setupWithNavController
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var backPressedOnce = false
+    private val backPressHandler = Handler(Looper.getMainLooper())
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,13 +30,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Upload questions only once (you can comment this out in production)
+        // Upload questions only once (comment this out in production)
         AddWebDesigningQuestions.uploadQuestionsIfNeeded(this)
 
-        // Load HomeFragment by default
-        loadFragment(HomeFragment())
+        // Initialize NavController from NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
 
-        // Show Admin panel only if user is 'admin'
+        // Configure BottomNavigationView to work with NavController
+        binding.bottomNavigation.setupWithNavController(navController)
+
+        // Hide admin menu item by default
+        binding.bottomNavigation.menu.findItem(R.id.nav_admin).isVisible = false
+
+        binding.bottomNavigation.menu.findItem(R.id.nav_results).isVisible = true
+
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             FirebaseFirestore.getInstance().collection("users")
@@ -36,36 +54,32 @@ class MainActivity : AppCompatActivity() {
                     val role = document.getString("role")
                     if (role == "admin") {
                         binding.bottomNavigation.menu.findItem(R.id.nav_admin).isVisible = true
-                    } else {
-                        binding.bottomNavigation.menu.findItem(R.id.nav_admin).isVisible = false
+                        binding.bottomNavigation.menu.findItem(R.id.nav_results).isVisible = false
                     }
                 }
         }
 
-
-        // Handle Bottom Navigation selections
+        // Handle bottom navigation selections (NavController will handle fragment navigation)
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    loadFragment(HomeFragment())
+                    navController.navigate(R.id.homeFragment)
                     true
                 }
-
                 R.id.nav_exams -> {
-                    loadFragment(ExamsFragment())
+                    navController.navigate(R.id.examsFragment)
                     true
                 }
                 R.id.nav_results -> {
-                    loadFragment(ResultsFragment())
+                    navController.navigate(R.id.resultsFragment)
                     true
                 }
                 R.id.nav_admin -> {
-                    loadFragment(AdminPanelFragment())
+                    navController.navigate(R.id.AdminPanelFragment)
                     true
                 }
-
                 R.id.nav_profile -> {
-                    loadFragment(ProfileFragment())
+                    navController.navigate(R.id.profileFragment)
                     true
                 }
                 else -> false
@@ -81,11 +95,22 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        if (!isFinishing && !supportFragmentManager.isStateSaved) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .commitAllowingStateLoss()
+    override fun onBackPressed() {
+        if (navController.previousBackStackEntry != null) {
+            // If there is a previous fragment, navigate back
+            navController.navigateUp()
+        } else {
+            if (backPressedOnce) {
+                super.onBackPressed()
+                return
+            }
+
+            backPressedOnce = true
+            Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show()
+
+            backPressHandler.postDelayed({ backPressedOnce = false }, 2000)
         }
     }
+
+
 }

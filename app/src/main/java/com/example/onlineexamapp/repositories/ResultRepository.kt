@@ -1,8 +1,8 @@
 package com.example.onlineexamapp.repositories
 
 import android.util.Log
-import com.google.firebase.firestore.FirebaseFirestore
 import com.example.onlineexamapp.models.ResultModel
+import com.google.firebase.firestore.FirebaseFirestore
 
 class ResultRepository {
     private val db = FirebaseFirestore.getInstance()
@@ -10,16 +10,16 @@ class ResultRepository {
     fun submitResult(
         examId: String,
         studentId: String,
-        score: Double,  // 🔹 Change from Int to Double
-        totalMarks: Double, // 🔹 Change from Int to Double
+        score: Double,
+        totalMarks: Double,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit
     ) {
         val resultData = hashMapOf(
             "examId" to examId,
             "studentId" to studentId,
-            "score" to score,  // ✅ Now a Double
-            "totalMarks" to totalMarks  // ✅ Now a Double
+            "score" to score,
+            "totalMarks" to totalMarks
         )
 
         db.collection("results")
@@ -36,12 +36,21 @@ class ResultRepository {
                     val id = document.id
                     val examId = document.getString("examId") ?: ""
                     val studentId = document.getString("studentId") ?: ""
-
-                    // 🔹 Use .getDouble() instead of .toInt()
                     val score = document.getDouble("score") ?: 0.0
                     val totalMarks = document.getDouble("totalMarks") ?: 0.0
 
-                    ResultModel(id, examId, studentId, score, totalMarks)
+                    ResultModel(
+                        id = id,
+                        examId = examId,
+                        userId = studentId,
+                        score = score,
+                        totalMarks = totalMarks,
+                        percentage = if (totalMarks > 0) (score / totalMarks) * 100 else 0.0,
+                        examTitle = "",
+                        subject = "",
+                        studentName = "",
+                        examDate = ""
+                    )
                 }
                 onComplete(results)
             }
@@ -59,12 +68,21 @@ class ResultRepository {
                 val results = querySnapshot.documents.mapNotNull { document ->
                     val id = document.id
                     val examId = document.getString("examId") ?: ""
-
-                    // 🔹 Use .getDouble() instead of .toInt()
                     val score = document.getDouble("score") ?: 0.0
                     val totalMarks = document.getDouble("totalMarks") ?: 0.0
 
-                    ResultModel(id, examId, studentId, score, totalMarks)
+                    ResultModel(
+                        id = id,
+                        examId = examId,
+                        userId = studentId,
+                        score = score,
+                        totalMarks = totalMarks,
+                        percentage = if (totalMarks > 0) (score / totalMarks) * 100 else 0.0,
+                        examTitle = "",
+                        subject = "",
+                        studentName = "",
+                        examDate = ""
+                    )
                 }
                 onComplete(results)
             }
@@ -73,5 +91,4 @@ class ResultRepository {
                 onComplete(emptyList())
             }
     }
-
 }

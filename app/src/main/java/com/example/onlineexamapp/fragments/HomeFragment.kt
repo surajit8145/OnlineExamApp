@@ -12,11 +12,18 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.onlineexamapp.R
+import com.example.onlineexamapp.activities.AdminViewResultsActivity
 import com.example.onlineexamapp.activities.AuthActivity
+import com.example.onlineexamapp.activities.CreateAnnouncementActivity
+import com.example.onlineexamapp.activities.CreateExamActivity
+import com.example.onlineexamapp.activities.EditQuestionActivity
+import com.example.onlineexamapp.activities.ManageExamsActivity
+import com.example.onlineexamapp.activities.ManageStudentsActivity
 import com.example.onlineexamapp.activities.TakeQuizActivity
 import com.example.onlineexamapp.adapters.AnnouncementAdapter
 import com.example.onlineexamapp.viewmodel.ProfileViewModel
@@ -24,19 +31,17 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
-import com.example.onlineexamapp.activities.ExamListActivity // Import for ExamListActivity
-import com.example.onlineexamapp.activities.ViewResultsActivity // Import for ViewResultsActivity
 import com.example.onlineexamapp.databinding.FragmentHomeBinding
 import com.example.onlineexamapp.models.Announcement
 import com.google.firebase.firestore.FirebaseFirestore
+
+
 
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-
-
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
@@ -66,75 +71,85 @@ class HomeFragment : Fragment() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
             profileViewModel.fetchUserProfile()
-            observeUserProfile()
+            observeUserProfile() // This will now handle role-based quick actions visibility
+
             binding.loginRegisterPrompt.visibility = View.GONE
             binding.loggedInHeader.visibility = View.VISIBLE
             binding.guestHeader.visibility = View.GONE
 
-            // Make the quick actions sections visible.
-            binding.quickActionsSection.visibility = View.VISIBLE
-
-            // Hide the locked messages
+            // Hide locked messages and enable buttons by default for logged-in users
             binding.studyMaterialsLockedMessage.visibility = View.GONE
             binding.practiceQuizzesLockedMessage.visibility = View.GONE
-            // Make buttons clickable
             binding.studyMaterialsButton.isClickable = true
             binding.studyMaterialsButton.isFocusable = true
             binding.practiceQuizzesButton.isClickable = true
             binding.practiceQuizzesButton.isFocusable = true
 
-            // Set click listeners for the quick action buttons
+            // Set up common button listeners for student quick actions (will be made visible based on role)
+            val navController = findNavController()
             binding.actionTakeExam.setOnClickListener {
-                startActivity(Intent(requireContext(), ExamListActivity::class.java))
+                navController.navigate(R.id.action_homeFragment_to_examsFragment)
             }
             binding.actionViewResults.setOnClickListener {
-                startActivity(Intent(requireContext(), ViewResultsActivity::class.java))
+                navController.navigate(R.id.action_homeFragment_to_resultsFragment)
             }
             binding.actionProfile.setOnClickListener {
-                // Use a fragment transaction to display the profile fragment
-                val profileFragment = ProfileFragment()
-                val transaction = requireFragmentManager().beginTransaction()
-                transaction.replace(R.id.fragment_container, profileFragment) // Replace the fragment_container
-                transaction.addToBackStack(null) // Add to back stack so user can navigate back
-                transaction.commit()
+                navController.navigate(R.id.action_homeFragment_to_profileFragment)
             }
-
-            // Add click listeners for Settings and Help buttons to also navigate to ProfileFragment
-            binding.actionSettings.setOnClickListener {
-                val profileFragment = ProfileFragment()
-                val transaction = requireFragmentManager().beginTransaction()
-                transaction.replace(R.id.fragment_container, profileFragment)
-                transaction.addToBackStack(null)
-                transaction.commit()
-            }
-
             binding.actionHelp.setOnClickListener {
-                val profileFragment = ProfileFragment()
-                val transaction = requireFragmentManager().beginTransaction()
-                transaction.replace(R.id.fragment_container, profileFragment)
-                transaction.addToBackStack(null)
-                transaction.commit()
+                // Assuming R.id.action_homeFragment_to_profileFragment is a placeholder for a help fragment
+                // If you have a dedicated help fragment, update this
+                navController.navigate(R.id.action_homeFragment_to_profileFragment)
+            }
+            binding.actionSettings.setOnClickListener {
+                // Assuming R.id.action_homeFragment_to_profileFragment is a placeholder for a settings fragment
+                // If you have a dedicated settings fragment, update this
+                navController.navigate(R.id.action_homeFragment_to_profileFragment)
+            }
+            binding.actionExamHistory.setOnClickListener {
+                navController.navigate(R.id.action_homeFragment_to_examsFragment)
+            }
+
+            // Admin Quick Actions Listeners (will only be visible for admin role)
+            binding.actionManageStudent.setOnClickListener {
+                startActivity(Intent(requireContext(), ManageStudentsActivity::class.java))
+            }
+            binding.actionCreateExam.setOnClickListener {
+                startActivity(Intent(requireContext(), CreateExamActivity::class.java))
+            }
+            binding.actionManageExam.setOnClickListener {
+                startActivity(Intent(requireContext(), ManageExamsActivity::class.java))
+            }
+            binding.actionCreateAnnouncement.setOnClickListener {
+                startActivity(Intent(requireContext(), CreateAnnouncementActivity::class.java))
+            }
+            binding.actionAdminViewResults.setOnClickListener {
+                startActivity(Intent(requireContext(), AdminViewResultsActivity::class.java))
+            }
+            binding.actionEditQuestion.setOnClickListener {
+                startActivity(Intent(requireContext(), EditQuestionActivity::class.java))
             }
 
 
         } else {
+            // Guest user state
             binding.loginRegisterPrompt.visibility = View.VISIBLE
             binding.loggedInHeader.visibility = View.GONE
             binding.guestHeader.visibility = View.VISIBLE
 
-            // Hide the quick actions sections.
-            binding.quickActionsSection.visibility = View.GONE
+            // Hide both quick actions sections for guests
+            binding.studentQuickActionsSection.visibility = View.GONE
+            binding.adminQuickActionsSection.visibility = View.GONE
+
             binding.studyMaterialsLockedMessage.visibility = View.VISIBLE
             binding.practiceQuizzesLockedMessage.visibility = View.VISIBLE
 
-            // Make buttons not clickable
+            // Make buttons not clickable for guests
             binding.studyMaterialsButton.isClickable = false
             binding.studyMaterialsButton.isFocusable = false
             binding.practiceQuizzesButton.isClickable = false
             binding.practiceQuizzesButton.isFocusable = false
         }
-
-
 
         binding.buttonLogin.setOnClickListener {
             startActivity(Intent(requireContext(), AuthActivity::class.java))
@@ -143,8 +158,6 @@ class HomeFragment : Fragment() {
         binding.buttonRegister.setOnClickListener {
             startActivity(Intent(requireContext(), AuthActivity::class.java))
         }
-
-
     }
 
     private fun setupViewPager() {
@@ -182,7 +195,6 @@ class HomeFragment : Fragment() {
                 val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                 val today = sdf.parse(sdf.format(Date()))
 
-                // Parse and filter announcements valid today
                 val announcementList = documents.mapNotNull { document ->
                     try {
                         val announcement = document.toObject(Announcement::class.java)
@@ -192,30 +204,32 @@ class HomeFragment : Fragment() {
                         if (startDate != null && endDate != null &&
                             !today.before(startDate) && !today.after(endDate)) {
                             announcement
-                        } else {
-                            null
-                        }
+                        } else null
                     } catch (e: Exception) {
                         Log.e("HomeFragment", "Error parsing announcement", e)
                         null
                     }
                 }
 
-                // Sort: Important first, then most recent startDate
                 val sortedList = announcementList.sortedWith(
                     compareByDescending<Announcement> { it.isImportant }
                         .thenByDescending { parseDate(it.startDate, sdf) ?: Date(0) }
                 )
 
-                if (sortedList.isEmpty()) {
-                    Toast.makeText(requireContext(), "No valid announcements found", Toast.LENGTH_SHORT).show()
-                }
+                if (!isAdded || _binding == null) return@addOnSuccessListener  // Check fragment is attached
 
-                // Bind sorted list to RecyclerView
-                binding.announcementsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-                binding.announcementsRecyclerView.adapter = AnnouncementAdapter(sortedList)
+                _binding?.let { binding ->
+                    if (sortedList.isEmpty()) {
+                        // Removed the Toast for "No valid announcements found" as it might be annoying on every load
+                        // Consider showing a "No announcements" TextView instead
+                    }
+
+                    binding.announcementsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+                    binding.announcementsRecyclerView.adapter = AnnouncementAdapter(sortedList)
+                }
             }
             .addOnFailureListener { exception ->
+                if (!isAdded || _binding == null) return@addOnFailureListener
                 Log.e("HomeFragment", "Error loading announcements", exception)
                 Toast.makeText(requireContext(), "Failed to load announcements", Toast.LENGTH_SHORT).show()
             }
@@ -230,10 +244,6 @@ class HomeFragment : Fragment() {
             null
         }
     }
-
-
-
-
 
     private fun openStudyMaterials() {
         val studyMaterialLink = "https://drive.google.com/drive/folders/1zN01OPFaL3m_sQU5MrqhOb0_jpoIrG6c?usp=sharing"
@@ -290,7 +300,6 @@ class HomeFragment : Fragment() {
         binding.tipOfTheDayText.text = tips.random()
     }
 
-
     private fun observeUserProfile() {
         profileViewModel.userProfile.observe(viewLifecycleOwner) { document ->
             document?.takeIf { it.exists() }?.let {
@@ -306,6 +315,19 @@ class HomeFragment : Fragment() {
                         .load(profilePicture)
                         .circleCrop()
                         .into(binding.profileImage)
+                }
+
+                // Role-based visibility for quick actions
+                if (role.equals("admin", ignoreCase = true)) {
+                    binding.adminQuickActionsSection.visibility = View.VISIBLE
+                    binding.studentQuickActionsSection.visibility = View.GONE
+                } else if (role.equals("student", ignoreCase = true)) {
+                    binding.adminQuickActionsSection.visibility = View.GONE
+                    binding.studentQuickActionsSection.visibility = View.VISIBLE
+                } else {
+                    // Default to student quick actions or hide both if role is unknown/invalid
+                    binding.adminQuickActionsSection.visibility = View.GONE
+                    binding.studentQuickActionsSection.visibility = View.VISIBLE
                 }
             }
         }

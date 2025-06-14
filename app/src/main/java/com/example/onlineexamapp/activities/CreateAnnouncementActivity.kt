@@ -4,6 +4,7 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.onlineexamapp.R
 import com.example.onlineexamapp.models.Announcement
@@ -14,17 +15,13 @@ class CreateAnnouncementActivity : AppCompatActivity() {
 
     private lateinit var etTitle: EditText
     private lateinit var etContent: EditText
-    private lateinit var etEndDate: EditText // Renamed from etDate
-    private lateinit var etStartDate: EditText // Renamed from etValidFrom
+    private lateinit var etEndDate: EditText
+    private lateinit var etStartDate: EditText
     private lateinit var cbImportant: CheckBox
     private lateinit var btnSubmit: Button
-    private lateinit var announcementListView: ListView
-    private lateinit var announcementsAdapter: ArrayAdapter<String>
+    private lateinit var announcementContainer: LinearLayout
 
     private val db = FirebaseFirestore.getInstance()
-    private val announcementsList = mutableListOf<String>()
-    // Map formatted string (Title - Content) to ID
-    private val announcementIdMap = mutableMapOf<String, String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,27 +30,20 @@ class CreateAnnouncementActivity : AppCompatActivity() {
         // Initialize views
         etTitle = findViewById(R.id.etTitle)
         etContent = findViewById(R.id.etContent)
-        etEndDate = findViewById(R.id.etDate) // R.id.etDate is now used for the end date
-        etStartDate = findViewById(R.id.etValidFrom) // R.id.etValidFrom is now used for the start date
+        etEndDate = findViewById(R.id.etDate)
+        etStartDate = findViewById(R.id.etValidFrom)
         cbImportant = findViewById(R.id.cbImportant)
         btnSubmit = findViewById(R.id.btnSubmit)
-        announcementListView = findViewById(R.id.announcementListView)
+        announcementContainer = findViewById(R.id.announcementContainer)
 
-        // Using a simple list item layout that supports single line text
-        // If content is long, consider a custom layout or a different adapter
-        announcementsAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, announcementsList)
-        announcementListView.adapter = announcementsAdapter
-
-        fetchAnnouncements()
-
-        // Set non-editable text fields for date selection
-        etStartDate.apply { // Start Date
+        // Set up date pickers
+        etStartDate.apply {
             isFocusable = false
             isClickable = true
             setOnClickListener { showDatePicker(this) }
         }
 
-        etEndDate.apply { // End Date
+        etEndDate.apply {
             isFocusable = false
             isClickable = true
             setOnClickListener { showDatePicker(this) }
@@ -63,23 +53,7 @@ class CreateAnnouncementActivity : AppCompatActivity() {
             createAnnouncement()
         }
 
-        announcementListView.setOnItemClickListener { _, _, position, _ ->
-            val selectedItemText = announcementsList[position]
-            // Find the ID using the full formatted string
-            val announcementId = announcementIdMap[selectedItemText]
-
-            if (announcementId != null) {
-                android.app.AlertDialog.Builder(this)
-                    .setTitle("Delete Announcement")
-                    // Display the title in the confirmation message
-                    .setMessage("Are you sure you want to delete the announcement with title \"${announcementIdMap.entries.find { it.value == announcementId }?.key?.split(" - Content: ")?.get(0)}\"?")
-                    .setPositiveButton("Yes") { _, _ ->
-                        deleteAnnouncement(announcementId)
-                    }
-                    .setNegativeButton("No", null)
-                    .show()
-            }
-        }
+        fetchAnnouncements()
     }
 
     private fun showDatePicker(targetEditText: EditText) {
@@ -89,7 +63,6 @@ class CreateAnnouncementActivity : AppCompatActivity() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
-            // Month is 0-indexed, so add 1
             val formattedDate = String.format("%04d-%02d-%02d", selectedYear, selectedMonth + 1, selectedDay)
             targetEditText.setText(formattedDate)
         }, year, month, day)
@@ -101,24 +74,43 @@ class CreateAnnouncementActivity : AppCompatActivity() {
         db.collection("announcements")
             .get()
             .addOnSuccessListener { documents ->
-                announcementsList.clear()
-                announcementIdMap.clear()
+                announcementContainer.removeAllViews()
                 for (document in documents) {
                     try {
                         val announcement = document.toObject(Announcement::class.java)
                         announcement.id = document.id
 
-                        // Format the string to display both title and content
-                        val formattedItem = "Title: ${announcement.title} - Content: ${announcement.content}"
-                        announcementsList.add(formattedItem)
-                        // Map the formatted string to the document ID
-                        announcementIdMap[formattedItem] = announcement.id
+                        val textView = TextView(this).apply {
+                            text = "📌 ${announcement.title}\n📝 ${announcement.content}"
+                            setPadding(24, 16, 24, 16)
+                            textSize = 16f
+                            setTextColor(resources.getColor(R.color.text_primary, null))
+                            setBackgroundResource(R.drawable.edittext_background)
+                            setOnClickListener {
+                                AlertDialog.Builder(this@CreateAnnouncementActivity)
+                                    .setTitle("Delete Announcement")
+                                    .setMessage("Are you sure you want to delete \"${announcement.title}\"?")
+                                    .setPositiveButton("Yes") { _, _ ->
+                                        deleteAnnouncement(announcement.id)
+                                    }
+                                    .setNegativeButton("No", null)
+                                    .show()
+                            }
+                        }
+
+                        val layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT
+                        ).apply {
+                            setMargins(0, 0, 0, 12)
+                        }
+
+                        announcementContainer.addView(textView, layoutParams)
 
                     } catch (e: Exception) {
-                        Log.e("CreateAnnouncementActivity", "Error parsing announcement document: ${document.id}", e)
+                        Log.e("CreateAnnouncementActivity", "Error parsing document: ${document.id}", e)
                     }
                 }
-                announcementsAdapter.notifyDataSetChanged()
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Error fetching announcements: ${e.localizedMessage}", Toast.LENGTH_LONG).show()

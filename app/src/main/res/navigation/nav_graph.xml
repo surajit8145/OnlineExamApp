@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.onlineexamapp.fragments.HomeFragment"
+        android:label="Home">
+        <action
+            android:id="@+id/action_homeFragment_to_examsFragment"
+            app:destination="@id/examsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.onlineexamapp.fragments.ProfileFragment"
+        android:label="Profile">
+        <action
+            android:id="@+id/action_profileFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/examsFragment"
+        android:name="com.example.onlineexamapp.fragments.ExamsFragment"
+        android:label="Exams" />
+
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="com.example.onlineexamapp.fragments.ResultsFragment"
+        android:label="Results" />
+
+
+    <fragment
+        android:id="@+id/AdminPanelFragment"
+        android:name="com.example.onlineexamapp.fragments.AdminPanelFragment"
+        android:label="Admin Panel" />
+
+</navigation>

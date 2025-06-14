@@ -1,132 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
-    android:layout_marginTop="25dp"
-   >
+    android:background="@color/background"
+    android:fillViewport="true">
 
-    <!-- Title -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Question"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/text_primary"
-        android:layout_gravity="center_horizontal"
-        android:paddingBottom="8dp"/>
-
-    <!-- Exam Selection -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Exam"
-        android:textSize="16sp"
-        android:textColor="@color/text_secondary"
-        android:paddingBottom="4dp"/>
-
-    <Spinner
-        android:id="@+id/spinnerExam"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"/>
+        android:orientation="vertical">
 
-    <!-- Question Input -->
-    <EditText
-        android:id="@+id/etQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Question"
-        android:padding="12dp"
-        android:textColor="@color/text_primary"
-        android:background="@drawable/edittext_background"
-        android:inputType="text"
-        android:layout_marginTop="8dp"/>
+        <!-- Title -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="📝 Add New Question"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:gravity="center"
+            android:paddingBottom="12dp" />
 
-    <!-- Options -->
-    <EditText
-        android:id="@+id/etOption1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Option A"
-        android:padding="12dp"
-        android:textColor="@color/text_primary"
-        android:background="@drawable/edittext_background"
-        android:inputType="text"
-        android:layout_marginTop="4dp"/>
+        <!-- Instructions -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/surface"
+            android:elevation="4dp"
+            android:padding="12dp"
+            app:cardCornerRadius="12dp">
 
-    <EditText
-        android:id="@+id/etOption2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Option B"
-        android:padding="12dp"
-        android:textColor="@color/text_primary"
-        android:background="@drawable/edittext_background"
-        android:inputType="text"
-        android:layout_marginTop="4dp"/>
+            <TextView
+                android:id="@+id/tvInstructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="🔔 Instructions:\n• Select the exam to which the question belongs.\n• Enter the question and all four options.\n• Choose the correct answer from the dropdown.\n• Click 'Save Question' to submit."
+                android:textSize="14sp"
+                android:textColor="@color/text_secondary" />
+        </androidx.cardview.widget.CardView>
 
-    <EditText
-        android:id="@+id/etOption3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Option C"
-        android:padding="12dp"
-        android:textColor="@color/text_primary"
-        android:background="@drawable/edittext_background"
-        android:inputType="text"
-        android:layout_marginTop="4dp"/>
+        <!-- Exam Selection -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Exam"
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary"
+            android:paddingBottom="4dp" />
 
-    <EditText
-        android:id="@+id/etOption4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Option D"
-        android:padding="12dp"
-        android:textColor="@color/text_primary"
-        android:background="@drawable/edittext_background"
-        android:inputType="text"
-        android:layout_marginTop="4dp"/>
+        <Spinner
+            android:id="@+id/spinnerExam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:background="@drawable/spinner_background"
+            android:layout_marginBottom="12dp" />
 
-    <!-- Correct Answer Dropdown -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Select Correct Answer"
-        android:textSize="16sp"
-        android:textColor="@color/text_secondary"
-        android:paddingTop="8dp"/>
+        <!-- Question Input -->
+        <EditText
+            android:id="@+id/etQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Question"
+            android:padding="12dp"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/edittext_background"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top"
+            android:layout_marginBottom="12dp" />
 
-    <Spinner
-        android:id="@+id/spinnerCorrectAnswer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/spinner_background"
-        android:padding="12dp"/>
+        <!-- Option Inputs -->
+        <EditText
+            android:id="@+id/etOption1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Option A"
+            android:padding="12dp"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/edittext_background"
+            android:inputType="text"
+            android:layout_marginBottom="8dp" />
 
-    <!-- Save Button -->
-    <Button
-        android:id="@+id/btnSaveQuestion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Question"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/button_primary"
-        android:padding="14dp"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        />
+        <EditText
+            android:id="@+id/etOption2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Option B"
+            android:padding="12dp"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/edittext_background"
+            android:inputType="text"
+            android:layout_marginBottom="8dp" />
 
-    <!-- Loading Indicator -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:layout_marginTop="16dp"/>
+        <EditText
+            android:id="@+id/etOption3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Option C"
+            android:padding="12dp"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/edittext_background"
+            android:inputType="text"
+            android:layout_marginBottom="8dp" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/etOption4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Option D"
+            android:padding="12dp"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/edittext_background"
+            android:inputType="text"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Correct Answer -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Correct Answer"
+            android:textSize="16sp"
+            android:textColor="@color/text_secondary"
+            android:paddingBottom="4dp" />
+
+        <Spinner
+            android:id="@+id/spinnerCorrectAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/spinner_background"
+            android:padding="12dp"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Save Button -->
+        <Button
+            android:id="@+id/btnSaveQuestion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="✅ Save Question"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/button_primary"
+            android:padding="14dp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Progress Bar -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp" />
+
+    </LinearLayout>
+</ScrollView>

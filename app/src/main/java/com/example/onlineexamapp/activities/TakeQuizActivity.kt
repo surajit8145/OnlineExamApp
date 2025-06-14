@@ -13,6 +13,8 @@ import com.example.onlineexamapp.models.Question
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.*
+import com.google.android.material.button.MaterialButton // Import MaterialButton
+
 
 class TakeQuizActivity : AppCompatActivity() {
 
@@ -37,6 +39,9 @@ class TakeQuizActivity : AppCompatActivity() {
 
         userName = intent.getStringExtra("USER_NAME") ?: ""
         difficultyLevel = intent.getStringExtra("DIFFICULTY_LEVEL") ?: ""
+
+        // Set initial state of the next button
+        setNextButtonEnabled(false)
 
         setupQuestions()
     }
@@ -67,7 +72,7 @@ class TakeQuizActivity : AppCompatActivity() {
                         }
 
                         questionsList = questionResult.toObjects<Question>().toMutableList()
-                        totalQuestions = questionsList.size // get the total questions
+                        totalQuestions = questionsList.size
                         if (questionsList.isNotEmpty()) {
                             questionsList.forEach { it.selectedAnswer = null }
                             showQuestion()
@@ -87,7 +92,7 @@ class TakeQuizActivity : AppCompatActivity() {
     }
 
     private fun setupTimer() {
-        timer?.cancel() // Cancel any existing timer
+        timer?.cancel()
         var totalTimeInSeconds = 30
         binding.tvTimer.text = formatTime(totalTimeInSeconds.toLong())
 
@@ -97,17 +102,17 @@ class TakeQuizActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                // Handle timeout: Show correct answer and go to next question
-                if (!isAnswerSelected) { // Only show if no answer has been selected
+                if (!isAnswerSelected) {
+                    // Show correct answer and enable next button when timer finishes without selection
                     showCorrectAnswer()
+                    setNextButtonEnabled(true) // Explicitly enable after timeout
                 }
             }
         }.start()
     }
 
     private fun formatTime(seconds: Long): String {
-
-        return String.format("%02d",seconds)
+        return String.format("%02d", seconds)
     }
 
     private fun resetOptionsForNewQuestion() {
@@ -122,16 +127,30 @@ class TakeQuizActivity : AppCompatActivity() {
         binding.radioGroup.clearCheck()
         binding.radioGroup.isEnabled = true
         selectedAnswer = null
-        isAnswerSelected = false // Reset the flag
-        binding.btnNext.isEnabled = false // Disable next button
+        isAnswerSelected = false
+        setNextButtonEnabled(false) // Disable next button for new question
     }
+
+    // Helper function to manage next button state and color
+    private fun setNextButtonEnabled(isEnabled: Boolean) {
+        binding.btnNext.isEnabled = isEnabled
+        if (isEnabled) {
+            // Set to default enabled button color (e.g., your primary color or a light blue)
+            (binding.btnNext as? MaterialButton)?.backgroundTintList = getColorStateList(R.color.accent_blue) // Example: Use accent_blue or your primary color
+            binding.btnNext.setTextColor(getColor(R.color.white)) // Example: White text for enabled button
+        } else {
+            // Set to disabled button color
+            (binding.btnNext as? MaterialButton)?.backgroundTintList = getColorStateList(R.color.button_disabled_color)
+            binding.btnNext.setTextColor(getColor(R.color.button_disabled_text_color))
+        }
+    }
+
 
     private fun showQuestion() {
         resetOptionsForNewQuestion()
 
         if (currentQuestionIndex >= 0 && currentQuestionIndex < questionsList.size) {
             val question = questionsList[currentQuestionIndex]
-            // set the question number and total
             binding.tvQuestionNumber.text = "Q ${currentQuestionIndex + 1} / $totalQuestions"
             binding.tvQuestion.text = question.question
             binding.rbOption1.text = question.options.getOrNull(0) ?: ""
@@ -146,7 +165,7 @@ class TakeQuizActivity : AppCompatActivity() {
                 binding.rbOption4.text -> binding.rbOption4.isChecked = true
             }
 
-            // Detach any existing listener
+            // Detach any existing listener to prevent multiple triggers
             binding.rbOption1.setOnClickListener(null)
             binding.rbOption2.setOnClickListener(null)
             binding.rbOption3.setOnClickListener(null)
@@ -165,24 +184,29 @@ class TakeQuizActivity : AppCompatActivity() {
             binding.rbOption4.setOnClickListener {
                 handleOptionSelection(question, binding.rbOption4.text.toString())
             }
-            setupTimer() // Start the timer for the question
+            setupTimer()
         } else {
-            //If all questions are finished.
             finishQuiz()
         }
+
+        // Set the click listener for the Next button.
+        // It's important to set this only once, or handle its state
+        // to show the toast when disabled.
         binding.btnNext.setOnClickListener {
-            goToNextQuestion()
+            if (binding.btnNext.isEnabled) {
+                goToNextQuestion()
+            } else {
+                Toast.makeText(this, "Please select an answer or wait for the timer to finish.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
     private fun handleOptionSelection(question: Question, selectedOptionText: String) {
-        if (timer != null) {
-            timer?.cancel()
-        }
+        timer?.cancel() // Cancel the timer immediately on selection
         saveSelectedAnswer(selectedOptionText)
         showAnswer()
         isAnswerSelected = true
-        binding.btnNext.isEnabled = true // Enable the next button after an answer
+        setNextButtonEnabled(true) // Enable the next button after an answer
     }
 
     private fun saveSelectedAnswer(selectedOptionText: String) {
@@ -220,6 +244,11 @@ class TakeQuizActivity : AppCompatActivity() {
                 correctRadioButtonView?.setTextColor(getColor(R.color.green))
             }
         } else {
+            // This else block handles the case where no answer was selected, likely due to timer finish
+            // The `showCorrectAnswer` function already handles enabling the next button and coloring
+            // the correct answer. This `showAnswer` function is called after an answer is selected.
+            // If selectedRadioButton is null here, it implies an unusual state, but we'll still
+            // attempt to show the correct answer if the timer ran out.
             val correctRadioButtonView = when (correctAnswer) {
                 binding.rbOption1.text -> binding.rbOption1
                 binding.rbOption2.text -> binding.rbOption2
@@ -254,7 +283,7 @@ class TakeQuizActivity : AppCompatActivity() {
         binding.rbOption3.isEnabled = false
         binding.rbOption4.isEnabled = false
         binding.radioGroup.isEnabled = false
-        binding.btnNext.isEnabled = true // Enable next button
+        setNextButtonEnabled(true) // Enable next button after timeout (and show correct answer)
     }
 
     private fun goToNextQuestion() {
@@ -286,7 +315,7 @@ class TakeQuizActivity : AppCompatActivity() {
             .setMessage(message)
             .setCancelable(false)
             .setPositiveButton("OK") { _, _ ->
-                finish() // Close the activity
+                finish()
             }
             .show()
     }

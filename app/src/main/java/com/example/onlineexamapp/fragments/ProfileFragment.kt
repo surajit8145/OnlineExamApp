@@ -16,6 +16,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.onlineexamapp.R
 import com.example.onlineexamapp.activities.AuthActivity
@@ -50,11 +51,11 @@ class ProfileFragment : Fragment() {
             setDisplayHomeAsUpEnabled(true)
             title = "Profile"
         }
+
+// Use NavController for smoother navigation
         toolbar.setNavigationOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeFragment())
-                .addToBackStack(null)
-                .commit()
+            val navController = findNavController()
+            navController.navigate(R.id.action_profileFragment_to_homeFragment)
         }
 
         // Bind views
@@ -102,21 +103,26 @@ class ProfileFragment : Fragment() {
         // ViewModel
         viewModel = ViewModelProvider(this)[ProfileViewModel::class.java]
         viewModel.userProfile.observe(viewLifecycleOwner) { document ->
+            val logoutButton = view?.findViewById<TextView>(R.id.logoutButton) // Get reference here
+
             if (document != null) {
                 loggedInSection.visibility = View.VISIBLE
                 loggedOutSection.visibility = View.GONE
+                logoutButton?.visibility = View.VISIBLE // Show logout button when logged in
+
                 userName.text = document.getString("name") ?: "Unknown"
                 userEmail.text = document.getString("email") ?: ""
                 val imageUrl = document.getString("profile_picture")
                 if (!imageUrl.isNullOrEmpty()) {
                     Glide.with(requireContext()).load(imageUrl).into(profilePicture)
                 }
+
             } else {
                 loggedInSection.visibility = View.GONE
                 loggedOutSection.visibility = View.VISIBLE
+                logoutButton?.visibility = View.GONE // Hide logout button when not logged in
             }
         }
-
         viewModel.errorMessage.observe(viewLifecycleOwner) {
             if (!it.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()

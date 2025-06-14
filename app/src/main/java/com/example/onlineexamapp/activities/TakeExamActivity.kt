@@ -38,7 +38,7 @@ class TakeExamActivity : AppCompatActivity() {
         examId = intent.getStringExtra("examId")
 
         binding.rvQuestions.layoutManager = LinearLayoutManager(this)
-        questionAdapter = QuestionAdapter(questionList, isEditable = true) // ✅ allow answer selection
+        questionAdapter = QuestionAdapter(questionList, isEditable = true)
         binding.rvQuestions.adapter = questionAdapter
 
         examId?.let {
@@ -155,10 +155,10 @@ class TakeExamActivity : AppCompatActivity() {
                 correct,
                 onSuccess = {
                     responsesSaved++
-                    // ✅ When all responses are saved, then save the result
                     if (responsesSaved == totalQuestions) {
-                        val score = (correctAnswers.toDouble() / totalQuestions) * 100
-                        saveResultToFirestore(score)
+                        val score = correctAnswers.toDouble()
+                        val totalMarks = totalQuestions.toDouble()
+                        saveResultToFirestore(score, totalMarks)
                     }
                 },
                 onFailure = {
@@ -168,27 +168,55 @@ class TakeExamActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveResultToFirestore(score: Double) {
-        val resultData = hashMapOf(
-            "examId" to examId,
-            "userId" to userId,
-            "score" to score
-        )
+    private fun saveResultToFirestore(score: Double, totalMarks: Double) {
+        val resultId = "result" + System.currentTimeMillis()
 
-        db.collection("results")
-            .add(resultData)
-            .addOnSuccessListener {
-                isExamSubmitted = true
-                AlertDialog.Builder(this)
-                    .setTitle("Exam Submitted")
-                    .setMessage("You scored: ${"%.2f".format(score)}%")
-                    .setPositiveButton("OK") { _, _ -> finish() }
-                    .setCancelable(false)
-                    .show()
+        // First, get student name from "users" collection using userId
+        db.collection("users").document(userId!!).get()
+            .addOnSuccessListener { userDoc ->
+                val studentName = userDoc.getString("name") ?: "Unknown"
+
+                // Now get exam title and subject
+                db.collection("exams").document(examId!!).get()
+                    .addOnSuccessListener { document ->
+                        val examTitle = document.getString("title") ?: ""
+                        val subject = document.getString("subject") ?: ""
+
+                        val resultData = hashMapOf(
+                            "id" to resultId,
+                            "examId" to examId,
+                            "userId" to userId,
+                            "score" to score,
+                            "totalMarks" to totalMarks,
+                            "percentage" to String.format("%.2f", (score / totalMarks) * 100).toDouble(),
+                            "examTitle" to examTitle,
+                            "subject" to subject,
+                            "studentName" to studentName
+                        )
+
+                        db.collection("results")
+                            .document(resultId)
+                            .set(resultData)
+                            .addOnSuccessListener {
+                                isExamSubmitted = true
+                                AlertDialog.Builder(this)
+                                    .setTitle("Exam Submitted")
+                                    .setMessage("You scored: $score / $totalMarks")
+                                    .setPositiveButton("OK") { _, _ -> finish() }
+                                    .setCancelable(false)
+                                    .show()
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(this, "Failed to save result", Toast.LENGTH_SHORT).show()
+                                Log.e("TakeExamActivity", "Error saving result", it)
+                            }
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Failed to load exam info", Toast.LENGTH_SHORT).show()
+                    }
             }
             .addOnFailureListener {
-                Toast.makeText(this, "Failed to save result", Toast.LENGTH_SHORT).show()
-                Log.e("TakeExamActivity", "Error saving result", it)
+                Toast.makeText(this, "Failed to load user info", Toast.LENGTH_SHORT).show()
             }
     }
 

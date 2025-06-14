@@ -1,40 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutEditQuestionsRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:layout_marginTop="25dp"
+    android:padding="24dp"
+    android:background="?android:colorBackground"
     tools:context=".activities.EditQuestionActivity">
 
-    <!-- Spinner to select an exam -->
+    <TextView
+        android:id="@+id/tvPageTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="✏️ Edit Exam Questions"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorPrimary"
+        android:gravity="center"
+        android:layout_marginBottom="24dp"/>
+
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="32dp"
-        android:layout_height="13dp"
-        android:layout_gravity="center"
-        android:visibility="gone" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:indeterminateTint="?attr/colorPrimary"
+        android:visibility="gone"
+        android:layout_marginBottom="16dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Select Exam"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:layout_marginBottom="4dp"/>
-
-    <Spinner
-        android:id="@+id/spinnerExam"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dropdown"
+        android:text="📌 Step 1: Select an exam from the dropdown to manage its questions."
+        android:textSize="14sp"
+        android:textColor="?android:attr/textColorSecondary"
         android:layout_marginBottom="12dp"/>
 
-    <!-- Progress Bar -->
 
-    <!-- RecyclerView to display and edit questions inline -->
+
+        <Spinner
+            android:id="@+id/spinnerExam"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:spinnerMode="dropdown"
+            android:layout_marginBottom="12dp"/>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="📋 Step 2: Tap on any question below to edit its details."
+        android:textSize="14sp"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="12dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewQuestions"
         android:layout_width="match_parent"
@@ -42,6 +64,7 @@
         android:layout_weight="1"
         android:paddingTop="8dp"
         android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

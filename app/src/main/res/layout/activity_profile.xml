@@ -1,116 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="?android:colorBackground"> <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:padding="24dp"> <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Your Profile"
+    android:textSize="32sp"
+    android:textStyle="bold"
+    android:textColor="?attr/colorPrimary"
+    android:layout_marginBottom="16dp" />
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:text="Update your details, change your profile picture, or reset your password here."
+        android:textSize="15sp"
+        android:textColor="?android:attr/textColorSecondary"
         android:gravity="center"
-        android:padding="24dp"
-        android:layout_marginTop="30dp">
+        android:layout_marginBottom="32dp" />
 
-        <!-- Title -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Profile"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:textColor="@color/primary"
-            android:layout_marginBottom="20dp" />
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/ivProfileImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_profile_placeholder"
+        android:layout_marginBottom="12dp"
+        android:contentDescription="Profile Image"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:strokeColor="@color/accent_blue"
+        app:strokeWidth="2dp" />
 
-        <!-- Profile Image -->
-        <ImageView
-            android:id="@+id/ivProfileImage"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_profile_placeholder"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="Profile Image" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSelectImage"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Image"
+        android:textSize="14sp"
+        android:textColor="?attr/colorPrimary"
+        app:icon="@drawable/ic_camera"
+        app:iconTint="?attr/colorPrimary"
+        android:layout_marginBottom="32dp" />
 
-        <!-- Change Image Button -->
-        <Button
-            android:id="@+id/btnSelectImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change Image"
-            android:textSize="14sp"
-            android:backgroundTint="@color/button_primary"
-            android:layout_marginBottom="16dp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilEmail"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email Address"
+        android:enabled="false"
+        android:focusable="false"
+        app:hintTextColor="?android:attr/textColorSecondary"
+        app:boxStrokeColor="?android:attr/textColorSecondary"
+        android:layout_marginBottom="16dp">
 
-        <!-- Email -->
-        <TextView
-            android:text="Email"
-            android:textSize="14sp"
-            android:textColor="@color/text_primary"
-            android:layout_marginBottom="4dp"
-            android:layout_gravity="start"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content" />
-
-        <TextView
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tvEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="none"
+            android:focusable="false"
+            android:clickable="false"
             android:text="user@example.com"
             android:textSize="16sp"
-            android:padding="10dp"
-            android:background="@drawable/input_bg"
-            android:layout_marginBottom="12dp" />
+            android:textColor="?android:attr/textColorPrimary"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Name -->
-        <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilName"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Full Name"
+        android:layout_marginBottom="16dp">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_bg"
-            android:hint="Enter Name"
-            android:minHeight="48dp"
-            android:padding="12dp"
-            android:textSize="16sp" />
+            android:inputType="textPersonName"
+            android:textSize="16sp"
+            android:textColor="?android:attr/textColorPrimary" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Phone -->
-        <EditText
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPhone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Phone Number"
+        app:counterEnabled="true"
+        app:counterMaxLength="15"
+        android:layout_marginBottom="32dp">
+
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/input_bg"
-            android:hint="Enter Phone Number"
             android:inputType="phone"
-            android:minHeight="48dp"
-            android:padding="12dp"
-            android:maxLength="10"
-            android:textSize="16sp" />
-
-        <!-- Buttons -->
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Update Profile"
-            android:backgroundTint="@color/primary"
-            android:textColor="@color/white"
             android:textSize="16sp"
-            android:layout_marginBottom="5dp" />
+            android:textColor="?android:attr/textColorPrimary" />
+    </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnUpdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Update Profile"
+        android:textSize="18sp"
+        android:paddingVertical="14dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:cornerRadius="8dp"
+        android:layout_marginBottom="16dp" />
 
-
-        <TextView
-            android:id="@+id/btnChangePassword"
-            android:text="Change Password"
-            android:textColor="@android:color/holo_blue_dark"
-            android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp" />
-
-
-
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnChangePassword"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Password"
+        android:textSize="16sp"
+        android:textColor="?attr/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp" />
+</LinearLayout>
 </ScrollView>

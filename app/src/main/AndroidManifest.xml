@@ -43,13 +43,11 @@
         <activity android:name=".activities.ProfileActivity" />
         <activity android:name=".activities.AdminViewResultsActivity" />
         <activity android:name=".activities.EditExamActivity" />
-        <activity android:name=".activities.ExamListActivity" />
         <activity android:name=".activities.CreateExamActivity" />
         <activity android:name=".activities.AddQuestionActivity" />
         <activity android:name=".activities.ManageStudentsActivity" />
 
         <activity android:name=".activities.EditStudentActivity" />
-        <activity android:name=".activities.ViewResultsActivity" />
         <activity android:name=".activities.ViewResponsesActivity" />
 
         <!-- Fixed: EditQuestionActivity -->

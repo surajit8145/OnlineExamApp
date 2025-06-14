@@ -153,8 +153,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:padding="8dp"
-            android:textColorHint="@color/text_primary"
-            android:background="@android:drawable/btn_dropdown"
             android:importantForAccessibility="yes"
             android:contentDescription="Select the correct answer for the question"
             />

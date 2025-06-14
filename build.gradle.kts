@@ -3,9 +3,11 @@ plugins {
     id("org.jetbrains.kotlin.android") version "2.0.0" apply false
     alias(libs.plugins.google.gms.google.services) apply false
 }
+// project-level build.gradle
 allprojects {
     repositories {
         google()
-        mavenCentral()  // Add Maven Central if it's missing
+        mavenCentral()
+        maven("https://jitpack.io") // Correct Kotlin DSL syntax
     }
 }

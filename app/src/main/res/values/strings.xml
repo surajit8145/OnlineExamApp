@@ -141,5 +141,24 @@
         <string name="share_app_setting_text">Share This App</string>
         <string name="share_app_action">Share this app</string>
 
+        <string name="admin_quick_actions">⚡ Quick Actions</string>
+        <string name="manage_student">Manage Student</string>
+        <string name="create_exam">Create Exam</string>
+        <string name="manage_exam">Manage Exam</string>
+    <string name="edit_question">Edit Question</string>
+        <string name="create_announcement">Create Announcement</string>
+        <string name="view_results_admin">View Results</string>
+
+
+
+    <string name="quiz_instructions">
+        **Instructions:**\n
+        1. Select your answer for each question within the given time.\n
+        2. The "Next" button will become active after you make a selection or if the timer expires.\n
+        3. Your final score will be displayed upon quiz completion.\n
+        Good luck!
+    </string>
+
+
 
 </resources>

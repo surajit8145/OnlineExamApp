@@ -7,7 +7,7 @@
     <color name="accent">#FFB300</color>  <!-- Warm yellow-orange for highlights -->
 
     <!-- Background & Surface Colors -->
-    <color name="background">#F8F9FA</color>  <!-- Soft light gray, clean background -->
+    <color name="background">#FFFFFF</color>  <!-- Soft light gray, clean background -->
     <color name="surface">#FFFFFF</color>  <!-- White for card backgrounds -->
     <color name="card_background">#FAFAFA</color>  <!-- Slightly off-white for cards -->
 
@@ -53,11 +53,15 @@
         <color name="accent_green">#2ecc71</color>
         <color name="accent_blue">#3498db</color>
 
-
+<color name="purple_500">#16F071</color>
 
     <color name="text_color_primary">#212121</color> <color name="text_color_secondary">#757575</color> <color name="icon_tint_primary">#212121</color>
     <color name="icon_tint_secondary">#757575</color>
     <color name="profile_picture_border_color">#BDBDBD</color> <color name="your_primary_color">#FF0000</color>
     <color name="star_gold">#FFD700</color>
 
+    <color name="button_disabled_color">#CCCCCC</color>
+    <color name="button_disabled_text_color">#A0A0A0</color>
+
 </resources>
+

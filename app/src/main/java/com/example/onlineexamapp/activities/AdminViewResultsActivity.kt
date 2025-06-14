@@ -81,7 +81,21 @@ class AdminViewResultsActivity : AppCompatActivity() {
                         val studentId = document.getString("userId") ?: "Unknown"
                         val score = document.getDouble("score") ?: 0.0
                         val totalMarks = document.getDouble("totalMarks") ?: 0.0
-                        resultsList.add(ResultModel(id, examId, studentId, score, totalMarks))
+                        resultsList.add(
+                            ResultModel(
+                                id = id,
+                                examId = examId,
+                                userId = studentId,
+                                score = score,
+                                totalMarks = totalMarks,
+                                percentage = (score / totalMarks) * 100,
+                                examTitle = "",  // will be filled later
+                                subject = "",    // will be filled later
+                                studentName = "",// will be filled later
+                                examDate = ""    // will be filled later
+                            )
+                        )
+
                     }
 
                     // Fetch exam details (title, subject) using examId
@@ -98,7 +112,7 @@ class AdminViewResultsActivity : AppCompatActivity() {
                             }
 
                             resultsList.forEach { result ->
-                                result.studentName = studentMap[result.studentId] ?: "Unknown Student"
+                                result.studentName = studentMap[result.userId] ?: "Unknown Student"
                                 result.examTitle = examTitle  // ✅ Add exam title
                                 result.subject = subject      // ✅ Add subject name
                             }

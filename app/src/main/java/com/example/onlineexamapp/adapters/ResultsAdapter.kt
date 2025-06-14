@@ -45,7 +45,7 @@ class ResultsAdapter(private val resultsList: List<ResultModel>) :
 
             // Pass the examId and studentId to the target activity
             intent.putExtra("examId", result.examId)
-            intent.putExtra("studentId", result.studentId)
+            intent.putExtra("studentId", result.userId)
 
             // Start the ViewResponsesActivity
             context.startActivity(intent)
