@@ -43,5 +43,10 @@
         android:id="@+id/AdminPanelFragment"
         android:name="com.example.onlineexamapp.fragments.AdminPanelFragment"
         android:label="Admin Panel" />
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="com.example.onlineexamapp.fragments.AttendanceFragment"
+        android:label="Manage Attendance" />
+
 
 </navigation>

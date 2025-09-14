@@ -24,9 +24,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.onlineexamapp" />
-                  <option name="mobileSdkAppId" value="1:846538619426:android:a1725bdfd25addf563a87b" />
-                  <option name="projectId" value="onlineexamapp-1331a" />
-                  <option name="projectNumber" value="846538619426" />
+                  <option name="mobileSdkAppId" value="1:606603720972:android:ec6e81a80458113ef23129" />
+                  <option name="projectId" value="onlineexamapp-c5d6e" />
+                  <option name="projectNumber" value="606603720972" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

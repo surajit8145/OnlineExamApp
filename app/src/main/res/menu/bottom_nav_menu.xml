@@ -1,12 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/nav_home" android:icon="@drawable/ic_home" android:title="Home" />
     <item android:id="@+id/nav_exams" android:icon="@drawable/ic_exam" android:title="Exams" />
-    <item android:id="@+id/nav_results" android:icon="@drawable/ic_result" android:title="Results" />
+  <!--  <item android:id="@+id/nav_results" android:icon="@drawable/ic_result" android:title="Results" />-->
     <!-- Removed Admin Panel -->
-    <item android:id="@+id/nav_profile" android:icon="@drawable/default_profile" android:title="Profile" />
+    <item android:id="@+id/nav_attendance" android:icon="@drawable/ic_results" android:title="Attendance" />
     <item
         android:id="@+id/nav_admin"
         android:icon="@drawable/ic_admin"
-        android:title="Admin Panel" />
+        android:title="TeacherPanel" />
+    <item android:id="@+id/nav_profile" android:icon="@drawable/default_profile" android:title="Profile" />
+
 
 </menu>

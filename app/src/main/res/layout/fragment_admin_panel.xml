@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="👑"
+                android:text="👨‍💼"
                 android:textSize="30sp"
                 android:layout_marginEnd="8dp"/>
 
@@ -33,7 +33,7 @@
                 android:id="@+id/tvAdminPanelTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Admin Control Panel"
+                android:text="Teacher Control Panel"
                 android:textSize="28sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary"/>
@@ -91,6 +91,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Manage Existing Exams"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_manage_exams"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <Button
+            android:id="@+id/btnCreateSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Create Subject List"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_manage_exams"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+        <Button
+            android:id="@+id/btnTakeAttendance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Take Attendance QR"
+            android:layout_marginBottom="24dp"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:cornerRadius="@dimen/button_corner_radius"
+            android:drawableStart="@drawable/ic_manage_exams"
+            android:drawablePadding="@dimen/drawable_padding"
+            android:gravity="start|center_vertical"
+            android:paddingStart="@dimen/padding_start_button"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <Button
+            android:id="@+id/btnManageAttendance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Manage Attendance"
             android:layout_marginBottom="24dp"
             style="@style/Widget.Material3.Button.OutlinedButton"
             app:cornerRadius="@dimen/button_corner_radius"

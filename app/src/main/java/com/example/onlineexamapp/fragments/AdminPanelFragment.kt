@@ -26,20 +26,24 @@ class AdminPanelFragment : Fragment() {
     }
 
     private fun setupUI() {
-        // No need to fetch user or role since this is admin-only
+        // Admin only fragment
         showAdminUI()
         setButtonClickListeners()
     }
 
     private fun showAdminUI() {
-        toggleButtons(true,
+        toggleButtons(
+            true,
             R.id.btnManageStudents,
             R.id.btnCreateExam,
             R.id.btnManageExams,
             R.id.btnAdminViewResults,
             R.id.btnAddQuestion,
             R.id.btnEditQuestion,
-            R.id.btnCreateAnnouncement // fixed
+            R.id.btnCreateAnnouncement,
+            R.id.btnCreateSubject,
+            R.id.btnTakeAttendance,
+            R.id.btnManageAttendance   // ✅ Added Manage Attendance button
         )
     }
 
@@ -58,7 +62,10 @@ class AdminPanelFragment : Fragment() {
             R.id.btnAdminViewResults to AdminViewResultsActivity::class.java,
             R.id.btnAddQuestion to AddQuestionActivity::class.java,
             R.id.btnEditQuestion to EditQuestionActivity::class.java,
-            R.id.btnCreateAnnouncement to CreateAnnouncementActivity::class.java // fixed
+            R.id.btnCreateAnnouncement to CreateAnnouncementActivity::class.java,
+            R.id.btnCreateSubject to CreateSubjectActivity::class.java,
+            R.id.btnTakeAttendance to TakeAttendanceActivity::class.java,
+            R.id.btnManageAttendance to ManageAttendanceActivity::class.java   // ✅ Linked
         ).forEach { (id, activity) ->
             rootView.findViewById<Button>(id)?.setOnClickListener {
                 startActivity(Intent(requireContext(), activity))

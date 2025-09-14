@@ -76,6 +76,7 @@ dependencies {
 
     // Image Loading
     implementation("com.github.bumptech.glide:glide:4.13.0")
+    implementation(libs.googleid)
     annotationProcessor("com.github.bumptech.glide:compiler:4.13.0")
     implementation("com.squareup.picasso:picasso:2.71828")
 
@@ -104,4 +105,8 @@ dependencies {
     implementation(libs.espresso.core) // if used in main code
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")  // Add MPAndroidChart dependency
     implementation ("com.google.android.material:material:1.12.0") // Use the latest stable version
+
+    implementation("com.journeyapps:zxing-android-embedded:4.3.0")
+    implementation("com.google.zxing:core:3.5.1")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

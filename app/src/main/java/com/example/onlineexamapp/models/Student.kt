@@ -5,5 +5,9 @@ data class Student(
     val name: String = "",
     val email: String = "",
     val phone: String = "",
-    val role: String = "student"
+    val role: String = "student",
+    val department: String = "",
+    val semester: String = "",
+    val created_at: Long = 0,
+    val profile_picture: String = ""
 )

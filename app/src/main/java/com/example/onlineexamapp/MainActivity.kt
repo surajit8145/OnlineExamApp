@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         // Hide admin menu item by default
         binding.bottomNavigation.menu.findItem(R.id.nav_admin).isVisible = false
 
-        binding.bottomNavigation.menu.findItem(R.id.nav_results).isVisible = true
+      //  binding.bottomNavigation.menu.findItem(R.id.nav_results).isVisible = true
 
         val currentUser = FirebaseAuth.getInstance().currentUser
         if (currentUser != null) {
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     val role = document.getString("role")
                     if (role == "admin") {
                         binding.bottomNavigation.menu.findItem(R.id.nav_admin).isVisible = true
-                        binding.bottomNavigation.menu.findItem(R.id.nav_results).isVisible = false
+                        //binding.bottomNavigation.menu.findItem(R.id.nav_results).isVisible = false
                     }
                 }
         }
@@ -70,10 +70,10 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.examsFragment)
                     true
                 }
-                R.id.nav_results -> {
+              /*  R.id.nav_results -> {
                     navController.navigate(R.id.resultsFragment)
                     true
-                }
+                }*/
                 R.id.nav_admin -> {
                     navController.navigate(R.id.AdminPanelFragment)
                     true
@@ -82,6 +82,11 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.profileFragment)
                     true
                 }
+                R.id.nav_attendance -> {
+                    navController.navigate(R.id.attendanceFragment)
+                    true
+                }
+
                 else -> false
             }
         }

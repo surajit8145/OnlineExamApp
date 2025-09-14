@@ -56,7 +56,6 @@ class ExamsFragment : Fragment() {
 
         // Get reference to SwipeRefreshLayout from the binding
         swipeRefreshLayout = binding.swipeRefreshLayout
-
         setupRecyclerViews()
         fetchExams() // Initial data fetch
 

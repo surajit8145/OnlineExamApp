@@ -61,7 +61,10 @@
         <activity android:name=".activities.EmailVerificationActivity"/>
         <activity android:name=".activities.AuthActivity"/>
         <activity android:name=".activities.CreateAnnouncementActivity"/>
-
+        <activity android:name=".activities.CreateSubjectActivity"/>
+        <activity android:name=".activities.TakeAttendanceActivity"/>
+        <activity android:name=".activities.StudentScanQrActivity"/>
+        <activity android:name=".activities.ManageAttendanceActivity"/>
 
     </application>
 

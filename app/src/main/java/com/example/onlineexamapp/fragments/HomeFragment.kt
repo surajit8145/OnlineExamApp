@@ -24,6 +24,7 @@ import com.example.onlineexamapp.activities.CreateExamActivity
 import com.example.onlineexamapp.activities.EditQuestionActivity
 import com.example.onlineexamapp.activities.ManageExamsActivity
 import com.example.onlineexamapp.activities.ManageStudentsActivity
+import com.example.onlineexamapp.activities.StudentScanQrActivity
 import com.example.onlineexamapp.activities.TakeQuizActivity
 import com.example.onlineexamapp.adapters.AnnouncementAdapter
 import com.example.onlineexamapp.viewmodel.ProfileViewModel
@@ -102,10 +103,9 @@ class HomeFragment : Fragment() {
                 navController.navigate(R.id.action_homeFragment_to_profileFragment)
             }
             binding.actionSettings.setOnClickListener {
-                // Assuming R.id.action_homeFragment_to_profileFragment is a placeholder for a settings fragment
-                // If you have a dedicated settings fragment, update this
-                navController.navigate(R.id.action_homeFragment_to_profileFragment)
+                startActivity(Intent(requireContext(), StudentScanQrActivity::class.java))
             }
+
             binding.actionExamHistory.setOnClickListener {
                 navController.navigate(R.id.action_homeFragment_to_examsFragment)
             }

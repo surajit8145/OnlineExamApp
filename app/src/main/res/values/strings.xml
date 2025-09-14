@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ExamPilot</string>
+    <string name="app_name">ACURRA</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -74,7 +74,7 @@
     <string name="view_results">📊 View Results</string>
     <string name="exam_history">🕘 Exam History</string>
     <string name="profile">👤 Profile</string>
-    <string name="settings">⚙️ Settings</string>
+    <string name="settings">Scan QR</string>
     <string name="help">❓ Help</string>
 
     <string name="login_to_access">🔒 Login to access more study materials.</string>
@@ -158,6 +158,25 @@
         3. Your final score will be displayed upon quiz completion.\n
         Good luck!
     </string>
+    <string-array name="semesters">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+
+    <string-array name="departments">
+        <item>Computer Science</item>
+        <item>Information Technology</item>
+        <item>Electronics</item>
+        <item>Mechanical</item>
+        <item>Civil</item>
+        <item>Electrical</item>
+    </string-array>
 
 
 

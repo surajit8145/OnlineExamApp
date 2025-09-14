@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "846538619426",
-    "project_id": "onlineexamapp-1331a",
-    "storage_bucket": "onlineexamapp-1331a.firebasestorage.app"
+    "project_number": "606603720972",
+    "project_id": "onlineexamapp-c5d6e",
+    "storage_bucket": "onlineexamapp-c5d6e.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:846538619426:android:a1725bdfd25addf563a87b",
+        "mobilesdk_app_id": "1:606603720972:android:ec6e81a80458113ef23129",
         "android_client_info": {
           "package_name": "com.example.onlineexamapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDneNbc6eCots_X9m4WIB2GIfahhATW-S4"
+          "current_key": "AIzaSyCLRed58HVcw4JqJuwU5It-40YjmEQQULw"
         }
       ],
       "services": {
